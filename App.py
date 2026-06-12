@@ -268,10 +268,9 @@ def market_prices():
     return jsonify(data)
 
 # ------------------ HOME ------------------
-
 @app.route("/")
 def home():
-    return "🚀 AgriNexus Server Running!"
+    return send_from_directory(".", "index.html")
 
 # ------------------ RUN ------------------
 
