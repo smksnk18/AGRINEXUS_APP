@@ -5,7 +5,8 @@ from flask_bcrypt import Bcrypt
 from twilio.rest import Client
 import random
 import os
-from flask import send_from_directory
+from flask import send_from_directory,send_file
+
 
 
 
@@ -51,7 +52,7 @@ otp_store = {}
 
 @app.route("/app")
 def serve_app():
-    return send_from_directory(".", "index.html")
+    return send_file("index.html")
 @app.route("/logout")
 def logout():
     session.pop("username", None)
@@ -270,7 +271,7 @@ def market_prices():
 # ------------------ HOME ------------------
 @app.route("/")
 def home():
-    return send_from_directory(".", "index.html")
+    return send_file("index.html")
 
 # ------------------ RUN ------------------
 
