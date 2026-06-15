@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # example
 
 A new Flutter project.
@@ -15,3 +16,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# AGRINEXUS_APP
+>>>>>>> c9da82a3fa22475fa5c0fd807ae3c63bd838bff3
