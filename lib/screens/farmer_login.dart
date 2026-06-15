@@ -46,8 +46,9 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
 
     setState(() => _isLoading = false);
     if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed(AppRoutes.farmerDashboard);
-  }
+    Navigator.of(context).pushReplacementNamed(
+      AppRoutes.dashboard,
+    );  }
 
   void _showPlaceholder(String feature) {
     ScaffoldMessenger.of(context).showSnackBar(

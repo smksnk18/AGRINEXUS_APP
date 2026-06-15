@@ -8,8 +8,8 @@ import '../utils/app_routes.dart';
 ///
 /// Shows a welcome banner, search bar, product categories,
 /// and quick-access cards for cart and orders.
-class ConsumerDashboardScreen extends StatelessWidget {
-  const ConsumerDashboardScreen({super.key});
+class ConsumerDashboard extends StatelessWidget {
+  const ConsumerDashboard({super.key});
 
   void _logout(BuildContext context) async {
     await context.read<AppStateProvider>().logout();

@@ -35,6 +35,19 @@ class AppPageRoute {
     );
   }
 
+  static Route<dynamic> heroFade(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (_, __, ___) => page,
+      transitionDuration: const Duration(milliseconds: 400),
+      transitionsBuilder: (_, animation, __, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+    );
+  }
+
   static Route fadeScale(Widget page) {
     return PageRouteBuilder(
       pageBuilder: (_, __, ___) => page,

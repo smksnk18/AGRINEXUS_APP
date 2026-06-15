@@ -1,20 +1,24 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/app_user.dart';
 
 /// App-wide session state managed via Provider.
-///
-/// Handles the currently selected role, logged-in user info,
-/// and "remember me" persistence using SharedPreferences.
 class AppStateProvider extends ChangeNotifier {
   UserRole _selectedRole = UserRole.none;
   AppUser? _currentUser;
   bool _rememberMe = false;
+  bool _isDarkMode = false;
 
   UserRole get selectedRole => _selectedRole;
   AppUser? get currentUser => _currentUser;
   bool get rememberMe => _rememberMe;
   bool get isLoggedIn => _currentUser != null;
+  bool get isDarkMode => _isDarkMode;
+
+  void toggleTheme(bool value) {
+    _isDarkMode = value;
+    notifyListeners();
+  }
 
   /// Called when the user picks Farmer or Consumer on the welcome screen.
   void selectRole(UserRole role) {

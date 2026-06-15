@@ -9,23 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.8
-
-  # State management
   provider: ^6.1.2
-
-  # Typography
   google_fonts: ^6.2.1
-
-  # Animations
   flutter_animate: ^4.5.0
-
-  # Lottie animations (for future use - e.g. splash/onboarding illustrations)
   lottie: ^3.1.2
-
-  # Local persistence (remember me, session)
   shared_preferences: ^2.2.3
+  animations: ^2.0.11
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -34,8 +25,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  # Uncomment and add paths if you add image/lottie assets later:
-  # assets:
-  #   - assets/images/
-  #   - assets/lottie/
+  assets:
+    - assets/images/
+    - assets/lottie/
