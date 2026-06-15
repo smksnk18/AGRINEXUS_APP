@@ -1,0 +1,74 @@
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/app_user.dart';
+
+/// App-wide session state managed via Provider.
+///
+/// Handles the currently selected role, logged-in user info,
+/// and "remember me" persistence using SharedPreferences.
+class AppStateProvider extends ChangeNotifier {
+  UserRole _selectedRole = UserRole.none;
+  AppUser? _currentUser;
+  bool _rememberMe = false;
+
+  UserRole get selectedRole => _selectedRole;
+  AppUser? get currentUser => _currentUser;
+  bool get rememberMe => _rememberMe;
+  bool get isLoggedIn => _currentUser != null;
+
+  /// Called when the user picks Farmer or Consumer on the welcome screen.
+  void selectRole(UserRole role) {
+    _selectedRole = role;
+    notifyListeners();
+  }
+
+  /// Simulates a login and stores session info.
+  Future<void> login({
+    required String name,
+    required String identifier,
+    required UserRole role,
+    bool rememberMe = false,
+  }) async {
+    _currentUser = AppUser(name: name, identifier: identifier, role: role);
+    _rememberMe = rememberMe;
+
+    if (rememberMe) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_identifier', identifier);
+      await prefs.setString('user_role', role.name);
+      await prefs.setBool('remember_me', true);
+    }
+    notifyListeners();
+  }
+
+  /// Loads any previously remembered session from SharedPreferences.
+  Future<void> loadSavedSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    final remembered = prefs.getBool('remember_me') ?? false;
+    if (remembered) {
+      final identifier = prefs.getString('user_identifier');
+      final roleName = prefs.getString('user_role');
+      if (identifier != null && roleName != null) {
+        _rememberMe = true;
+        _selectedRole =
+            roleName == 'farmer' ? UserRole.farmer : UserRole.consumer;
+        _currentUser = AppUser(
+          name: 'Welcome Back',
+          identifier: identifier,
+          role: _selectedRole,
+        );
+      }
+    }
+    notifyListeners();
+  }
+
+  /// Logs the user out and clears persisted session data.
+  Future<void> logout() async {
+    _currentUser = null;
+    _selectedRole = UserRole.none;
+    _rememberMe = false;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    notifyListeners();
+  }
+}

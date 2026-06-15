@@ -1,0 +1,41 @@
+name: agrinexus
+description: "AgriNexus - Connecting Farmers & Consumers. A premium agriculture marketplace app."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State management
+  provider: ^6.1.2
+
+  # Typography
+  google_fonts: ^6.2.1
+
+  # Animations
+  flutter_animate: ^4.5.0
+
+  # Lottie animations (for future use - e.g. splash/onboarding illustrations)
+  lottie: ^3.1.2
+
+  # Local persistence (remember me, session)
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Uncomment and add paths if you add image/lottie assets later:
+  # assets:
+  #   - assets/images/
+  #   - assets/lottie/
