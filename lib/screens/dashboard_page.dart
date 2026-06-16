@@ -3,6 +3,8 @@ import '../widgets/dashboard_card.dart';
 import 'notifications_page.dart';
 import 'detail_page.dart';
 import 'settings_page.dart';
+import 'weather/weather_page.dart';
+
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -191,9 +193,18 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
 
             ListTile(
-              leading: Icon(Icons.cloud),
-              title: Text("Weather"),
-              onTap: () {},
+              leading: const Icon(Icons.cloud),
+              title: const Text("Weather"),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const WeatherPage(),
+                  ),
+                );
+              },
             ),
 
             ListTile(
@@ -354,16 +365,29 @@ class _DashboardPageState extends State<DashboardPage> {
                             icon: filteredIcons[index],
                             colors: filteredGradients[index],
                             onTap: () {
+
+                              if (filteredTitles[index] == "Weather Forecast") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const WeatherPage(),
+                                  ),
+                                );
+                                return;
+                              }
+
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
                                   transitionDuration: const Duration(milliseconds: 400),
+
                                   pageBuilder: (_, animation, secondaryAnimation) =>
                                       DetailPage(
-                                        title: titles[index],
-                                        colors: gradients[index],
-                                        icon: icons[index],
+                                        title: filteredTitles[index],
+                                        colors: filteredGradients[index],
+                                        icon: filteredIcons[index],
                                       ),
+
                                   transitionsBuilder:
                                       (_, animation, secondaryAnimation, child) {
                                     return SlideTransition(
