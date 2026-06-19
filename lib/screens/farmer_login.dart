@@ -6,7 +6,7 @@ import '../utils/app_colors.dart';
 import '../utils/app_routes.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_textfield.dart';
-import 'register/farmer_register.dart';
+
 /// Login screen for Farmers.
 ///
 /// Includes mobile number + password login, "Forgot Password",
@@ -39,10 +39,10 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
 
     if (!mounted) return;
     await context.read<AppStateProvider>().login(
-      name: 'Farmer',
-      identifier: _mobileController.text.trim(),
-      role: UserRole.farmer,
-    );
+          name: 'Farmer',
+          identifier: _mobileController.text.trim(),
+          role: UserRole.farmer,
+        );
 
     setState(() => _isLoading = false);
     if (!mounted) return;
@@ -150,19 +150,7 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
                         child: CustomButton(
                           label: 'Register as Farmer',
                           isOutlined: true,
-
-
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>  Registerpage(
-                                  userType : "Farmer",
-                                ),
-                              ),
-
-                            );
-                          },
+                          onPressed: () => _showPlaceholder('Registration'),
                         ),
                       ),
                     ],

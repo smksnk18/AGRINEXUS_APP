@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/app_state_provider.dart';
+import 'paddy_guide_controller.dart'; // Import the new controller here
 import 'utils/app_routes.dart';
 import 'utils/theme.dart';
 
@@ -20,7 +21,11 @@ class AgriNexusApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // Your existing global state manager remains completely untouched
         ChangeNotifierProvider(create: (_) => AppStateProvider()),
+
+        // New controller appended seamlessly to the provider chain
+        ChangeNotifierProvider(create: (_) => PaddyGuideController()),
       ],
       child: MaterialApp(
         title: 'AgriNexus',

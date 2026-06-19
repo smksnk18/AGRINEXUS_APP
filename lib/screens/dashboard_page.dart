@@ -4,6 +4,7 @@ import 'notifications_page.dart';
 import 'detail_page.dart';
 import 'settings_page.dart';
 import 'weather/weather_page.dart';
+import 'package:agrinexus/screens/crop_guide/paddy_guide_screen.dart';
 
 
 class DashboardPage extends StatefulWidget {
@@ -371,6 +372,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) => const WeatherPage(),
+                                  ),
+                                );
+                                return;
+                              }
+                              if (filteredTitles[index] == "Crop Guide") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>  PaddyGuideScreen(),
                                   ),
                                 );
                                 return;

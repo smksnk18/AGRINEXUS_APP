@@ -6,7 +6,6 @@ import '../utils/app_colors.dart';
 import '../utils/app_routes.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_textfield.dart';
-import '../screens/register/consumer_register.dart';
 
 /// Login screen for Consumers.
 ///
@@ -41,11 +40,11 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
 
     if (!mounted) return;
     await context.read<AppStateProvider>().login(
-      name: 'Consumer',
-      identifier: _emailController.text.trim(),
-      role: UserRole.consumer,
-      rememberMe: _rememberMe,
-    );
+          name: 'Consumer',
+          identifier: _emailController.text.trim(),
+          role: UserRole.consumer,
+          rememberMe: _rememberMe,
+        );
 
     setState(() => _isLoading = false);
     if (!mounted) return;
@@ -95,7 +94,7 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                               return 'Email is required';
                             }
                             final emailRegex =
-                            RegExp(r'^[\w\.\-]+@([\w\-]+\.)+[\w\-]{2,4}$');
+                                RegExp(r'^[\w\.\-]+@([\w\-]+\.)+[\w\-]{2,4}$');
                             if (!emailRegex.hasMatch(val.trim())) {
                               return 'Enter a valid email address';
                             }
@@ -178,16 +177,9 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                       _fadeSlideIn(
                         delay: 250,
                         child: CustomButton(
-                            label: 'Register as Consumer',
-                            isOutlined: true,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RegisterPage(),
-                                ),
-                              );
-                            }
+                          label: 'Register as Consumer',
+                          isOutlined: true,
+                          onPressed: () => _showPlaceholder('Registration'),
                         ),
                       ),
                     ],
