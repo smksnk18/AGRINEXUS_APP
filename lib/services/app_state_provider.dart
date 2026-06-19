@@ -55,7 +55,7 @@ class AppStateProvider extends ChangeNotifier {
       if (identifier != null && roleName != null) {
         _rememberMe = true;
         _selectedRole =
-            roleName == 'farmer' ? UserRole.farmer : UserRole.consumer;
+        roleName == 'farmer' ? UserRole.farmer : UserRole.consumer;
         _currentUser = AppUser(
           name: 'Welcome Back',
           identifier: identifier,
