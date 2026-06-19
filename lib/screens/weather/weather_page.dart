@@ -14,6 +14,8 @@ import '../../widgets/weather/crop_vulnerability_card.dart';
 import '../../models/forecast_model.dart';
 import '../../widgets/weather/irrigation_card.dart';
 import '../../widgets/weather/weather_alert_card.dart';
+import 'package:provider/provider.dart';
+import '../../paddy_guide_controller.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -47,6 +49,16 @@ class _WeatherPageState extends State<WeatherPage> {
         position.latitude,
         position.longitude,
       );
+      final paddyController =
+      Provider.of<PaddyGuideController>(
+        context,
+        listen: false,
+      );
+
+      await paddyController.loadDiseaseRisk(
+        data.temperature,
+        data.humidity,
+      );
 
       final rainData =
       await WeatherService()
@@ -63,22 +75,53 @@ class _WeatherPageState extends State<WeatherPage> {
 
     } catch (e) {
 
-      debugPrint(
-        "Weather Error: $e",
-      );
-
       setState(() {
+        errorMessage = e.toString();
         loading = false;
       });
     }
   }
-
+  String? errorMessage;
   @override
   Widget build(BuildContext context) {
     if (loading) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    if (errorMessage != null) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment:
+            MainAxisAlignment.center,
+            children: [
+
+              const Icon(
+                Icons.location_off,
+                size: 60,
+                color: Colors.red,
+              ),
+
+              const SizedBox(height: 16),
+
+              Text(
+                errorMessage!,
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 16),
+
+              ElevatedButton(
+                onPressed: loadWeather,
+                child: const Text(
+                  "Try Again",
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
