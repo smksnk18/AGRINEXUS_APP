@@ -27,7 +27,7 @@ class WeatherMetricsGrid extends StatelessWidget {
       crossAxisCount: 2,
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      childAspectRatio: 2,
+      childAspectRatio: 1.1,
 
       children: [
 

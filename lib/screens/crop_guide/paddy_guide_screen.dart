@@ -15,8 +15,8 @@ import '../../services/weather_service.dart';
 import '../../services/location_service.dart';
 import '../../models/weather_model.dart';
 
-class PaddyGuideScreen extends StatefulWidget {
 
+class PaddyGuideScreen extends StatefulWidget {
   const PaddyGuideScreen({
     super.key,
   });
@@ -110,14 +110,13 @@ class _PaddyGuideScreenState extends State<PaddyGuideScreen> {
       );
 
       final result =
-      await GroqService()
-          .predictDisease(
+      await GroqService().predictDisease(
         variety:
-        controller
-            .selectedVariety!
-            .name,
-        temperature: weather?.temperature ?? 30,
-        humidity: weather?.humidity ?? 80,
+        controller.selectedVariety!.name,
+        temperature:
+        weather?.temperature ?? 30,
+        humidity:
+        weather?.humidity ?? 80,
         growthStage: stage,
       );
 
@@ -257,12 +256,8 @@ class _PaddyGuideScreenState extends State<PaddyGuideScreen> {
                   const SizedBox(height: 16),
 
                   WeatherAdviceCard(
-                    temperature:
-                    weather?.temperature ?? 30,
-
-                    humidity:
-                    weather?.humidity ?? 80,
-
+                    temperature: weather?.temperature ?? 30,
+                    humidity: weather?.humidity ?? 80,
                     rainExpected:
                     (weather?.humidity ?? 80) > 80,
                   ),
@@ -281,7 +276,7 @@ class _PaddyGuideScreenState extends State<PaddyGuideScreen> {
                       Icons.psychology,
                     ),
                     label: const Text(
-                      "Disease Analysis",
+                      "AI Disease Analysis",
                     ),
                   ),
                   const SizedBox(height: 16),

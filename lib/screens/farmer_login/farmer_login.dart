@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/app_user.dart';
-import '../services/app_state_provider.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_routes.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/custom_textfield.dart';
+import '../../models/app_user.dart';
+import '../../services/app_state_provider.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_routes.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_textfield.dart';
 
-/// Login screen for Consumers.
+/// Login screen for Farmers.
 ///
-/// Includes email + password login, "Remember Me", "Forgot Password",
-/// Google Sign-In placeholder, and a register option.
-class ConsumerLoginScreen extends StatefulWidget {
-  const ConsumerLoginScreen({super.key});
+/// Includes mobile number + password login, "Forgot Password",
+/// Google Sign-In and OTP login placeholders, plus a register option.
+class FarmerLoginScreen extends StatefulWidget {
+  const FarmerLoginScreen({super.key});
 
   @override
-  State<ConsumerLoginScreen> createState() => _ConsumerLoginScreenState();
+  State<FarmerLoginScreen> createState() => _FarmerLoginScreenState();
 }
 
-class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
+class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
-  bool _rememberMe = false;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _mobileController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -40,16 +39,16 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
 
     if (!mounted) return;
     await context.read<AppStateProvider>().login(
-          name: 'Consumer',
-          identifier: _emailController.text.trim(),
-          role: UserRole.consumer,
-          rememberMe: _rememberMe,
+          name: 'Farmer',
+          identifier: _mobileController.text.trim(),
+          role: UserRole.farmer,
         );
 
     setState(() => _isLoading = false);
     if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed(AppRoutes.consumerDashboard);
-  }
+    Navigator.of(context).pushReplacementNamed(
+      AppRoutes.dashboard,
+    );  }
 
   void _showPlaceholder(String feature) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -84,19 +83,17 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                       _fadeSlideIn(
                         delay: 0,
                         child: CustomTextField(
-                          controller: _emailController,
-                          label: 'Email Address',
-                          hint: 'Enter your email',
-                          prefixIcon: Icons.email_outlined,
-                          keyboardType: TextInputType.emailAddress,
+                          controller: _mobileController,
+                          label: 'Mobile Number',
+                          hint: 'Enter your mobile number',
+                          prefixIcon: Icons.phone_android_rounded,
+                          keyboardType: TextInputType.phone,
                           validator: (val) {
                             if (val == null || val.trim().isEmpty) {
-                              return 'Email is required';
+                              return 'Mobile number is required';
                             }
-                            final emailRegex =
-                                RegExp(r'^[\w\.\-]+@([\w\-]+\.)+[\w\-]{2,4}$');
-                            if (!emailRegex.hasMatch(val.trim())) {
-                              return 'Enter a valid email address';
+                            if (val.trim().length < 10) {
+                              return 'Enter a valid mobile number';
                             }
                             return null;
                           },
@@ -124,43 +121,18 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: Checkbox(
-                                  value: _rememberMe,
-                                  onChanged: (val) =>
-                                      setState(() => _rememberMe = val ?? false),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Remember Me',
-                                style: TextStyle(
-                                  fontSize: 13.5,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.onSurfaceVariant,
-                                ),
-                              ),
-                            ],
-                          ),
-                          TextButton(
-                            onPressed: () => _showPlaceholder('Forgot password'),
-                            child: const Text(
-                              'Forgot Password?',
-                              style: TextStyle(
-                                color: AppColors.primaryContainer,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 13.5,
-                              ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () => _showPlaceholder('Forgot password'),
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              color: AppColors.primaryContainer,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 12),
                       _fadeSlideIn(
@@ -170,14 +142,13 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                           icon: Icons.login_rounded,
                           isLoading: _isLoading,
                           onPressed: _handleLogin,
-                          gradient: AppColors.goldGradient,
                         ),
                       ),
                       const SizedBox(height: 14),
                       _fadeSlideIn(
                         delay: 250,
                         child: CustomButton(
-                          label: 'Register as Consumer',
+                          label: 'Register as Farmer',
                           isOutlined: true,
                           onPressed: () => _showPlaceholder('Registration'),
                         ),
@@ -195,6 +166,16 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                     icon: Icons.g_mobiledata_rounded,
                     isOutlined: true,
                     onPressed: () => _showPlaceholder('Google Sign-In'),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                _fadeSlideIn(
+                  delay: 350,
+                  child: CustomButton(
+                    label: 'Login with OTP',
+                    icon: Icons.sms_outlined,
+                    isOutlined: true,
+                    onPressed: () => _showPlaceholder('OTP Login'),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -235,15 +216,15 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              gradient: AppColors.goldGradient,
+              gradient: AppColors.greenButtonGradient,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(Icons.shopping_basket_rounded,
+            child: const Icon(Icons.agriculture_rounded,
                 color: Colors.white, size: 28),
           ),
           const SizedBox(height: 18),
           const Text(
-            'Consumer Login',
+            'Farmer Login',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w800,
@@ -252,7 +233,7 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            'Sign in to discover fresh produce straight from local farms.',
+            'Sign in to manage your produce, orders, and revenue.',
             style: TextStyle(
               fontSize: 14,
               color: AppColors.onSurfaceVariant.withOpacity(0.85),

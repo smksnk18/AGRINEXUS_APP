@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/app_user.dart';
-import '../services/app_state_provider.dart';
-import '../utils/app_colors.dart';
-import '../utils/app_routes.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/custom_textfield.dart';
+import '../../models/app_user.dart';
+import '../../services/app_state_provider.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_routes.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_textfield.dart';
 
 /// Login screen for Consumers.
 ///

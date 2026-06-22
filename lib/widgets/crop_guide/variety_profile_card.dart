@@ -134,65 +134,65 @@ class VarietyProfileCard extends StatelessWidget {
             const SizedBox(height: 20),
 
             /// Information Grid
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: [
 
-                SizedBox(
-                  width: 280,
-                  child: buildInfoTile(
-                    "Duration",
-                    "${variety.durationDays} Days",
-                    Icons.schedule,
+                  SizedBox(
+                    width: 280,
+                    child: buildInfoTile(
+                      "Duration",
+                      "${variety.durationDays} Days",
+                      Icons.schedule,
+                    ),
                   ),
-                ),
 
-                SizedBox(
-                  width: 280,
-                  child: buildInfoTile(
-                    "Yield",
-                    "${variety.avgYield} kg/acre",
-                    Icons.bar_chart,
+                  SizedBox(
+                    width: 280,
+                    child: buildInfoTile(
+                      "Yield",
+                      "${variety.avgYield} kg/acre",
+                      Icons.bar_chart,
+                    ),
                   ),
-                ),
 
-                SizedBox(
-                  width: 280,
-                  child: buildInfoTile(
-                    "Water Need",
-                    variety.waterRequirement,
-                    Icons.water_drop,
+                  SizedBox(
+                    width: 280,
+                    child: buildInfoTile(
+                      "Water Need",
+                      variety.waterRequirement,
+                      Icons.water_drop,
+                    ),
                   ),
-                ),
 
-                SizedBox(
-                  width: 280,
-                  child: buildInfoTile(
-                    "Market Price",
-                    "₹${variety.marketPrice.toStringAsFixed(0)}",
-                    Icons.currency_rupee,
+                  SizedBox(
+                    width: 280,
+                    child: buildInfoTile(
+                      "Market Price",
+                      "₹${variety.marketPrice.toStringAsFixed(0)}",
+                      Icons.currency_rupee,
+                    ),
                   ),
-                ),
 
-                SizedBox(
-                  width: 280,
-                  child: buildInfoTile(
-                    "Cultivation Cost",
-                    "₹${variety.costCultivation.toStringAsFixed(0)}",
-                    Icons.account_balance_wallet,
+                  SizedBox(
+                    width: 280,
+                    child: buildInfoTile(
+                      "Cultivation Cost",
+                      "₹${variety.costCultivation.toStringAsFixed(0)}",
+                      Icons.account_balance_wallet,
+                    ),
                   ),
-                ),
 
-                SizedBox(
-                  width: 280,
-                  child: buildInfoTile(
-                    "Estimated Profit",
-                    "₹${variety.estimatedProfit.toStringAsFixed(0)}",
-                    Icons.trending_up,
+                  SizedBox(
+                    width: 280,
+                    child: buildInfoTile(
+                      "Estimated Profit",
+                      "₹${variety.estimatedProfit.toStringAsFixed(0)}",
+                      Icons.trending_up,
+                    ),
                   ),
-                ),
-              ],
+                ],
 
 
             ),

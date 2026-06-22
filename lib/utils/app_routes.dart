@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../screens/splash_screen.dart';
-import '../screens/welcome_screen.dart';
-import '../screens/farmer_login.dart';
-import '../screens/consumer_login.dart';
-import '../screens/dashboard_page.dart';
-import '../screens/consumer_dashboard.dart';
-import '../screens/home_page.dart';
-import '../screens/settings_page.dart';
-import '../screens/notifications_page.dart';
-import '../screens/profile_page.dart';
-import '../screens/market_page.dart';
+import '../screens/farmer_login/splash_screen.dart';
+import '../screens/farmer_login/welcome_screen.dart';
+import '../screens/farmer_login/farmer_login.dart';
+import '../screens/farmer_login/consumer_login.dart';
+import '../screens/farmer_dashboard/dashboard_page.dart';
+import '../screens/farmer_login/consumer_dashboard.dart';
+import '../screens/farmer_dashboard/home_page.dart';
+import '../screens/farmer_dashboard/settings_page.dart';
+import '../screens/farmer_dashboard/notifications_page.dart';
+import '../screens/farmer_dashboard/profile_page.dart';
+import '../screens/farmer_dashboard/market_page.dart';
 
 /// Centralized named-route definitions and route generator for AgriNexus.
 class AppRoutes {

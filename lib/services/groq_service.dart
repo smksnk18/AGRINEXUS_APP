@@ -26,7 +26,7 @@ class GroqService {
           {
             "role": "system",
             "content":
-            "You are an agricultural disease expert."
+                "You are an agricultural disease expert."
           },
           {
             "role": "user",
