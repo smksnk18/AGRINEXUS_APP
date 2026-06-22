@@ -4,6 +4,8 @@ import 'notifications_page.dart';
 import 'detail_page.dart';
 import 'settings_page.dart';
 import '../eatgood/eatgood_home.dart';
+import '../weather/weather_page.dart';
+import '../crop_guide/paddy_guide_screen.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -42,7 +44,7 @@ class _DashboardPageState extends State<DashboardPage> {
   ];
   final List<List<Color>> gradients = const [
     [Color(0xff2D6A4F), Color(0xff40916C),],
-    [Color(0xffF9A826), Color(0xffFFD166),],
+    [Color(0xff11998E), Color(0xff38EF7D),],
     [Color(0xff4D96FF), Color(0xff6BCBFF),],
     [Color(0xff43AA8B), Color(0xff90BE6D),],
     [Color(0xff6C757D), Color(0xffADB5BD),],
@@ -365,6 +367,25 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                   );
 
+                                }
+
+                                if (titles[index] == "Weather Forecast") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const WeatherPage(),
+                                    ),
+                                  );
+                                  return;
+                                }
+                                if (titles[index] == "Crop Guide") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>  PaddyGuideScreen(),
+                                    ),
+                                  );
+                                  return;
                                 }
 
                                 else {
