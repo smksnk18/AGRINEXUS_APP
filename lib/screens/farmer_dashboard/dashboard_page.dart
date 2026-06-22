@@ -21,6 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
   "Crop Guide",
   "Govt Schemes",
   "EatGood",
+    "Market Price",
   ];
   List<String> filteredTitles = [];
   List<String> filteredSubtitles = [];
@@ -33,6 +34,7 @@ class _DashboardPageState extends State<DashboardPage> {
     "Grow crops wisely",
     "Know govt schemes",
     "Know what's good for you",
+    "Live market prices",
   ];
   final List<IconData> icons = const [
     Icons.person,
@@ -41,6 +43,7 @@ class _DashboardPageState extends State<DashboardPage> {
     Icons.grass_rounded,
     Icons.next_plan,
     Icons.qr_code_scanner,
+    Icons.shop,
   ];
   final List<List<Color>> gradients = const [
     [Color(0xff2D6A4F), Color(0xff40916C),],
@@ -49,6 +52,7 @@ class _DashboardPageState extends State<DashboardPage> {
     [Color(0xff43AA8B), Color(0xff90BE6D),],
     [Color(0xff6C757D), Color(0xffADB5BD),],
     [Color(0xff9D4EDD), Color(0xffC77DFF),],
+
   ];
   @override
   void initState() {
@@ -367,6 +371,24 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                   );
 
+                                }
+                                if (filteredTitles[index] == "Weather Forecast") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const WeatherPage(),
+                                    ),
+                                  );
+                                  return;
+                                }
+                                if (filteredTitles[index] == "Crop Guide") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>  PaddyGuideScreen(),
+                                    ),
+                                  );
+                                  return;
                                 }
 
                                 if (titles[index] == "Weather Forecast") {
