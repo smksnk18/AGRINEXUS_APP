@@ -4,10 +4,34 @@ import 'services/app_state_provider.dart';
 import 'paddy_guide_controller.dart'; // Import the new controller here
 import 'utils/app_routes.dart';
 import 'utils/theme.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'models/eatgood_product_model.dart';
 
 /// Entry point for the AgriNexus application.
-void main() {
-  runApp(const AgriNexusApp());
+Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(
+    EatGoodProductAdapter(),
+  );
+
+  await Hive.openBox<EatGoodProduct>(
+    'products',
+  );
+  debugPrint(
+      "BOX LENGTH = ${Hive.box<EatGoodProduct>('products').length}");
+  for (var p in Hive.box<EatGoodProduct>('products').values) {
+    debugPrint(
+        "${p.productName} : ${p.productId}");
+  }
+
+  runApp(
+    const AgriNexusApp(),
+  );
+
 }
 
 /// Root widget of the AgriNexus app.
