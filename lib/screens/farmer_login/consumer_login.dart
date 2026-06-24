@@ -6,6 +6,8 @@ import '../../utils/app_colors.dart';
 import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
+import '../register/consumer_register.dart';
+
 
 /// Login screen for Consumers.
 ///
@@ -179,8 +181,17 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                         child: CustomButton(
                           label: 'Register as Consumer',
                           isOutlined: true,
-                          onPressed: () => _showPlaceholder('Registration'),
-                        ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>  RegisterPage(
+                                  userType : "Consumer",
+                                ),
+                              ),
+
+                            );
+                          },                        ),
                       ),
                     ],
                   ),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
+import '../farmer_login/consumer_login.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final String userType;
+  const RegisterPage({
+    super.key,
+    required this.userType,
+});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -23,10 +27,16 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
 
-  String userType = "Consumer";
+  late String userType;
   String phoneNumber = "";
-
   @override
+  void initState()
+  {
+    super.initState();
+    userType =widget.userType;
+  }
+
+
   Widget build(BuildContext context) {
     return Scaffold(
 
@@ -43,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/farm_bg.jpg"),
+            image: AssetImage("assets/images/farm_bg.jpg"),
             fit: BoxFit.cover,
 
           ),
@@ -600,73 +610,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 20),
 
                     Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: Colors.grey.shade400,
-                            thickness: 1,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "OR",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            color: Colors.grey.shade400,
-                            thickness: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: OutlinedButton.icon(
-                        icon: Image.network(
-                          "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
-                          height: 24,
-                          width: 24,
-                        ),
-
-                        label: const Text(
-                          "Continue with Google",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.9),
-
-                          side: const BorderSide(
-                            color: Colors.green,
-                            width: 2,
-                          ),
-
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-
-                        onPressed: () {
-// Google Sign In
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
@@ -678,7 +621,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         TextButton(
                           onPressed: () {
-// Navigate to Login Page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ConsumerLoginScreen(),
+                              ),
+                            );
                           },
                           child: const Text(
                             "Login",

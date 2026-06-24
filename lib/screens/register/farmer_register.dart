@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
+import '../farmer_login/farmer_login.dart';
 
 class Registerpage extends StatefulWidget {
   final String userType;
@@ -52,7 +52,7 @@ class _RegisterPageState extends State<Registerpage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/farm_bg.jpg"),
+            image: AssetImage("assets/images/farm_bg.jpg"),
             fit: BoxFit.cover,
 
           ),
@@ -609,73 +609,6 @@ class _RegisterPageState extends State<Registerpage> {
                     const SizedBox(height: 20),
 
                     Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: Colors.grey.shade400,
-                            thickness: 1,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "OR",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            color: Colors.grey.shade400,
-                            thickness: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 55,
-                      child: OutlinedButton.icon(
-                        icon: Image.network(
-                          "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
-                          height: 24,
-                          width: 24,
-                        ),
-
-                        label: const Text(
-                          "Continue with Google",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.9),
-
-                          side: const BorderSide(
-                            color: Colors.green,
-                            width: 2,
-                          ),
-
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-
-                        onPressed: () {
-// Google Sign In
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
@@ -687,7 +620,12 @@ class _RegisterPageState extends State<Registerpage> {
                         ),
                         TextButton(
                           onPressed: () {
-// Navigate to Login Page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const FarmerLoginScreen(),
+                              ),
+                            );
                           },
                           child: const Text(
                             "Login",
