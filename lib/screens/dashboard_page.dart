@@ -16,11 +16,11 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final List<String> titles = const [
     "Add Stock",
-  "My Stock",
-  "Weather Forecast",
-  "Crop Guide",
-  "Govt Schemes",
-  "EatGood",
+    "My Stock",
+    "Weather Forecast",
+    "Crop Guide",
+    "Govt Schemes",
+    "EatGood",
   ];
   List<String> filteredTitles = [];
   List<String> filteredSubtitles = [];
@@ -253,15 +253,15 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor:
-          Color(0xff43AA8B),
-          icon:
-          Icon(Icons.add),
-          label:
-          Text("New Crop"),
-          onPressed: (){},
-        ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor:
+        Color(0xff43AA8B),
+        icon:
+        Icon(Icons.add),
+        label:
+        Text("New Crop"),
+        onPressed: (){},
+      ),
       body: AnimatedContainer(
         duration: Duration(milliseconds: 250),
         decoration: BoxDecoration(

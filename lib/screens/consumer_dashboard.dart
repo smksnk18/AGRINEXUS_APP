@@ -16,7 +16,7 @@ class ConsumerDashboard extends StatelessWidget {
     if (context.mounted) {
       Navigator.of(context).pushNamedAndRemoveUntil(
         AppRoutes.welcome,
-        (route) => false,
+            (route) => false,
       );
     }
   }
@@ -115,7 +115,7 @@ class ConsumerDashboard extends StatelessWidget {
                       border: InputBorder.none,
                       filled: false,
                       contentPadding:
-                          const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                     ),
                   ),
                 ),
@@ -159,19 +159,19 @@ class ConsumerDashboard extends StatelessWidget {
               const SizedBox(height: 14),
               isWide
                   ? Row(
-                      children: [
-                        Expanded(child: _activityCard('My Cart', '3 items', Icons.shopping_cart_rounded, AppColors.primaryContainer, 0)),
-                        const SizedBox(width: 16),
-                        Expanded(child: _activityCard('My Orders', '2 active', Icons.local_shipping_rounded, AppColors.secondaryContainer, 100)),
-                      ],
-                    )
+                children: [
+                  Expanded(child: _activityCard('My Cart', '3 items', Icons.shopping_cart_rounded, AppColors.primaryContainer, 0)),
+                  const SizedBox(width: 16),
+                  Expanded(child: _activityCard('My Orders', '2 active', Icons.local_shipping_rounded, AppColors.secondaryContainer, 100)),
+                ],
+              )
                   : Column(
-                      children: [
-                        _activityCard('My Cart', '3 items', Icons.shopping_cart_rounded, AppColors.primaryContainer, 0),
-                        const SizedBox(height: 14),
-                        _activityCard('My Orders', '2 active', Icons.local_shipping_rounded, AppColors.secondaryContainer, 100),
-                      ],
-                    ),
+                children: [
+                  _activityCard('My Cart', '3 items', Icons.shopping_cart_rounded, AppColors.primaryContainer, 0),
+                  const SizedBox(height: 14),
+                  _activityCard('My Orders', '2 active', Icons.local_shipping_rounded, AppColors.secondaryContainer, 100),
+                ],
+              ),
               const SizedBox(height: 20),
             ],
           ),
