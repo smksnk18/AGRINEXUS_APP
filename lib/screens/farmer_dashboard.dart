@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dashboard_page.dart';
+import 'farmer_dashboard/dashboard_page.dart';
 
 class FarmerDashboard extends StatelessWidget {
   const FarmerDashboard({super.key});
