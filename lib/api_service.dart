@@ -11,7 +11,7 @@ import '../models/market_price_model.dart';
 class AgriNexusApiService {
 
   static const String baseUrl =
-      "http://localhost:5000/api";
+      "https://agrinexus-backend-lg7w.onrender.com/api";
 
   // ==========================
   // STATES
