@@ -371,6 +371,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                       builder: (_) => EatgoodHome(),
                                     ),
                                   );
+                                  return;
 
                                 }
                                 if (filteredTitles[index] == "Weather Forecast") {
@@ -392,24 +393,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                   return;
                                 }
 
-                                if (titles[index] == "Weather Forecast") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const WeatherPage(),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                if (titles[index] == "Crop Guide") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) =>  PaddyGuideScreen(),
-                                    ),
-                                  );
-                                  return;
-                                }
 
                                 else {
 
