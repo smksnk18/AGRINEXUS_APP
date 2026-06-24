@@ -4,6 +4,8 @@ import 'notifications_page.dart';
 import 'detail_page.dart';
 import 'settings_page.dart';
 import '../eatgood/eatgood_home.dart';
+import '../market/market_dashboard_screen.dart';
+
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -19,6 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
   "Crop Guide",
   "Govt Schemes",
   "EatGood",
+    "Market Value",
   ];
   List<String> filteredTitles = [];
   List<String> filteredSubtitles = [];
@@ -31,6 +34,7 @@ class _DashboardPageState extends State<DashboardPage> {
     "Grow crops wisely",
     "Know govt schemes",
     "Know what's good for you",
+    "Know the Live Price Your Nearby Area",
   ];
   final List<IconData> icons = const [
     Icons.person,
@@ -39,6 +43,7 @@ class _DashboardPageState extends State<DashboardPage> {
     Icons.grass_rounded,
     Icons.next_plan,
     Icons.qr_code_scanner,
+    Icons.price_change,
   ];
   final List<List<Color>> gradients = const [
     [Color(0xff2D6A4F), Color(0xff40916C),],
@@ -47,6 +52,7 @@ class _DashboardPageState extends State<DashboardPage> {
     [Color(0xff43AA8B), Color(0xff90BE6D),],
     [Color(0xff6C757D), Color(0xffADB5BD),],
     [Color(0xff9D4EDD), Color(0xffC77DFF),],
+    [Color(0xff2D6A4F), Color(0xff40916C),],
   ];
   @override
   void initState() {
@@ -202,9 +208,23 @@ class _DashboardPageState extends State<DashboardPage> {
               title: Text("Crop Guide"),
               onTap: () {},
             ),
+            ListTile(
+              leading: const Icon(Icons.account_balance),
+              title: const Text("Market Price"),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MarketDashboardScreen(),
+                  ),
+                );
+              },
+            ),
 
             ListTile(
-              leading: Icon(Icons.account_balance),
+              leading: Icon(Icons.price_change),
               title: Text("Govt Schemes"),
               onTap: () {},
             ),
@@ -356,7 +376,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             colors: filteredGradients[index],
                               onTap: () {
 
-                                if (titles[index] == "EatGood") {
+                                if (filteredTitles[index] == "EatGood") {
 
                                   Navigator.push(
                                     context,
@@ -365,6 +385,15 @@ class _DashboardPageState extends State<DashboardPage> {
                                     ),
                                   );
 
+                                }
+
+                                else if (filteredTitles[index] == "Market Value") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const MarketDashboardScreen(),
+                                    ),
+                                  );
                                 }
 
                                 else {
@@ -376,9 +405,9 @@ class _DashboardPageState extends State<DashboardPage> {
 
                                       pageBuilder: (_, animation, secondaryAnimation) =>
                                           DetailPage(
-                                            title: titles[index],
-                                            colors: gradients[index],
-                                            icon: icons[index],
+                                            title: filteredTitles[index],
+                                            colors: filteredGradients[index],
+                                            icon: filteredIcons[index],
                                           ),
 
                                       transitionsBuilder:

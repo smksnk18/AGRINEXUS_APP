@@ -6,6 +6,7 @@ import '../../utils/app_colors.dart';
 import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
+import '../register/farmer_register.dart';
 
 /// Login screen for Farmers.
 ///
@@ -150,8 +151,17 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
                         child: CustomButton(
                           label: 'Register as Farmer',
                           isOutlined: true,
-                          onPressed: () => _showPlaceholder('Registration'),
-                        ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>  Registerpage(
+                                  userType : "Farmer",
+                                ),
+                              ),
+
+                            );
+                          },                        ),
                       ),
                     ],
                   ),

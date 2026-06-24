@@ -179,8 +179,17 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                         child: CustomButton(
                           label: 'Register as Consumer',
                           isOutlined: true,
-                          onPressed: () => _showPlaceholder('Registration'),
-                        ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>  RegisterPage(
+                                  userType : "Consumer",
+                                ),
+                              ),
+
+                            );
+                          },                        ),
                       ),
                     ],
                   ),
