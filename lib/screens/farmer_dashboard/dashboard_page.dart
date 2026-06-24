@@ -371,24 +371,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                       builder: (_) => EatgoodHome(),
                                     ),
                                   );
-
-                                }
-                                if (filteredTitles[index] == "Weather Forecast") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const WeatherPage(),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                if (filteredTitles[index] == "Crop Guide") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) =>  PaddyGuideScreen(),
-                                    ),
-                                  );
                                   return;
                                 }
 

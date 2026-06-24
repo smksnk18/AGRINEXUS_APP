@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class GroqService {
 
-  static const apiKey = "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";
+  static const apiKey = "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";
 
   Future<String> predictDisease({
     required String variety,
