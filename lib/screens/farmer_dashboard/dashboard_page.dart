@@ -52,6 +52,7 @@ class _DashboardPageState extends State<DashboardPage> {
     [Color(0xff43AA8B), Color(0xff90BE6D),],
     [Color(0xff6C757D), Color(0xffADB5BD),],
     [Color(0xff9D4EDD), Color(0xffC77DFF),],
+    [Color(0xff2D5A1A), Color(0xff40812C),],
 
   ];
   @override
