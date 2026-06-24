@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../widgets/dashboard_card.dart';
-import 'notifications_page.dart';
-import 'detail_page.dart';
-import 'settings_page.dart';
+import '../notifications_page.dart';
+import '../detail_page.dart';
+import '../settings_page.dart';
+import '../weather/weather_page.dart';
+import 'package:agrinexus/screens/crop_guide/paddy_guide_screen.dart';
 import '../eatgood/eatgood_home.dart';
 import '../market/market_dashboard_screen.dart';
 
@@ -16,11 +18,11 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final List<String> titles = const [
     "Add Stock",
-  "My Stock",
-  "Weather Forecast",
-  "Crop Guide",
-  "Govt Schemes",
-  "EatGood",
+    "My Stock",
+    "Weather Forecast",
+    "Crop Guide",
+    "Govt Schemes",
+    "EatGood",
     "Market Value",
   ];
   List<String> filteredTitles = [];
@@ -198,9 +200,18 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
 
             ListTile(
-              leading: Icon(Icons.cloud),
-              title: Text("Weather"),
-              onTap: () {},
+              leading: const Icon(Icons.cloud),
+              title: const Text("Weather"),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const WeatherPage(),
+                  ),
+                );
+              },
             ),
 
             ListTile(
@@ -262,15 +273,15 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor:
-          Color(0xff43AA8B),
-          icon:
-          Icon(Icons.add),
-          label:
-          Text("New Crop"),
-          onPressed: (){},
-        ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor:
+        Color(0xff43AA8B),
+        icon:
+        Icon(Icons.add),
+        label:
+        Text("New Crop"),
+        onPressed: (){},
+      ),
       body: AnimatedContainer(
         duration: Duration(milliseconds: 250),
         decoration: BoxDecoration(
@@ -374,64 +385,78 @@ class _DashboardPageState extends State<DashboardPage> {
                             subtitle: filteredSubtitles[index],
                             icon: filteredIcons[index],
                             colors: filteredGradients[index],
-                              onTap: () {
+                            onTap: () {
 
-                                if (filteredTitles[index] == "EatGood") {
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => EatgoodHome(),
-                                    ),
-                                  );
-
-                                }
-
-                                else if (filteredTitles[index] == "Market Value") {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const MarketDashboardScreen(),
-                                    ),
-                                  );
-                                }
-
-                                else {
-
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: const Duration(milliseconds: 400),
-
-                                      pageBuilder: (_, animation, secondaryAnimation) =>
-                                          DetailPage(
-                                            title: filteredTitles[index],
-                                            colors: filteredGradients[index],
-                                            icon: filteredIcons[index],
-                                          ),
-
-                                      transitionsBuilder:
-                                          (_, animation, secondaryAnimation, child) {
-
-                                        return SlideTransition(
-                                          position: Tween(
-                                            begin: const Offset(1,0),
-                                            end: Offset.zero,
-                                          ).animate(
-                                            CurvedAnimation(
-                                              parent: animation,
-                                              curve: Curves.easeOutCubic,
-                                            ),
-                                          ),
-
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-
-                                }
+                              if (filteredTitles[index] == "Weather Forecast") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const WeatherPage(),
+                                  ),
+                                );
+                                return;
                               }
+                              if (filteredTitles[index] == "Crop Guide") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>  PaddyGuideScreen(),
+                                  ),
+                                );
+                                return;
+                              }
+                              if (filteredTitles[index] == "EatGood") {
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => EatgoodHome(),
+                                  ),
+                                );
+                                return;
+
+                              }
+
+                              else if (filteredTitles[index] == "Market Value") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const MarketDashboardScreen(),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  transitionDuration: const Duration(milliseconds: 400),
+
+                                  pageBuilder: (_, animation, secondaryAnimation) =>
+                                      DetailPage(
+                                        title: filteredTitles[index],
+                                        colors: filteredGradients[index],
+                                        icon: filteredIcons[index],
+                                      ),
+
+                                  transitionsBuilder:
+                                      (_, animation, secondaryAnimation, child) {
+                                    return SlideTransition(
+                                      position: Tween(
+                                        begin: const Offset(1, 0),
+                                        end: Offset.zero,
+                                      ).animate(
+                                        CurvedAnimation(
+                                          parent: animation,
+                                          curve: Curves.easeOutCubic,
+                                        ),
+                                      ),
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           );
                         },
                       );
