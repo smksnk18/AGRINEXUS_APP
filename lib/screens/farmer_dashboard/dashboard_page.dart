@@ -7,6 +7,8 @@ import '../weather/weather_page.dart';
 import 'package:agrinexus/screens/crop_guide/paddy_guide_screen.dart';
 import '../eatgood/eatgood_home.dart';
 import '../market/market_dashboard_screen.dart';
+import '../govern/government_schemes/government_schemes_screen.dart';
+import '../govern/government_schemes/scheme_details_screen.dart';
 
 
 class DashboardPage extends StatefulWidget {
@@ -235,9 +237,20 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
 
             ListTile(
-              leading: Icon(Icons.price_change),
-              title: Text("Govt Schemes"),
-              onTap: () {},
+              leading: const Icon(Icons.price_change),
+              title: const Text("Govt Schemes"),
+              onTap: () {
+
+                Navigator.pop(context);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                    const GovernmentSchemesScreen(),
+                  ),
+                );
+              },
             ),
 
             Divider(),
@@ -415,6 +428,18 @@ class _DashboardPageState extends State<DashboardPage> {
                                 );
                                 return;
 
+
+                              }
+                              if (filteredTitles[index] == "Govt Schemes") {
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const GovernmentSchemesScreen(),
+                                  ),
+                                );
+
+                                return;
                               }
 
                               else if (filteredTitles[index] == "Market Value") {
