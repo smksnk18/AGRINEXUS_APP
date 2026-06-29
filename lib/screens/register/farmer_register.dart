@@ -252,17 +252,19 @@ class _RegisterPageState extends State<Registerpage> {
                                     size: 35,
                                   ),
 
-                                  const SizedBox(width: 10),
+                                  const SizedBox(width: 8),
 
-                                  Text(
+                                  Flexible(
+                                    child: Text(
                                     "Consumer",
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: userType == "Consumer"
                                           ? Colors.green
                                           : Colors.black,
                                     ),
+                                  ),
                                   ),
 
                                   const SizedBox(width: 10),

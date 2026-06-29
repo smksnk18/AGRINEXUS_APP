@@ -158,7 +158,7 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                   color: Colors.green,
                 ),
                 accountName: const Text(
-                  "Manikandan",
+                  "Hemaprakash",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 accountEmail: const Text("Farmer"),
@@ -275,10 +275,17 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                       child: Text('All Districts'),
                     ),
                     ...districts.map(
-                          (district) => DropdownMenuItem(
+                          (district) => DropdownMenuItem<String>(
                         value: district,
-                        child: Text(district),
+                        child: SizedBox(
+                            width: 220,
+                            child: Text(
+                              district,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                        )
                       ),
+                    ),
                     ),
                   ],
                   onChanged: (value) {
