@@ -195,15 +195,17 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                   const SizedBox(width: 10),
 
-                                  Text(
+                                  Flexible(
+                                    child: Text(
                                     "Farmer",
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: userType == "Farmer"
                                           ? Colors.green
                                           : Colors.black,
                                     ),
+                                  ),
                                   ),
 
                                   const SizedBox(width: 10),
@@ -250,15 +252,17 @@ class _RegisterPageState extends State<RegisterPage> {
                                   const Icon(
                                     Icons.store,
                                     color: Colors.green,
-                                    size: 35,
+                                    size: 30,
                                   ),
 
-                                  const SizedBox(width: 10),
+                                  const SizedBox(width: 8),
 
                                   Text(
                                     "Consumer",
+                                    overflow: TextOverflow.ellipsis,
+
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: userType == "Consumer"
                                           ? Colors.green
@@ -273,6 +277,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ? Icons.radio_button_checked
                                         : Icons.radio_button_off,
                                     color: Colors.green,
+                                    size: 24,
                                   ),
                                 ],
                               ),
