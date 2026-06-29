@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class GroqService {
 
-  static const apiKey = "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";
+  static String get apiKey =>
+      dotenv.env["GROQ_API_KEY"] ?? "";
 
   Future<String> predictDisease({
     required String variety,
