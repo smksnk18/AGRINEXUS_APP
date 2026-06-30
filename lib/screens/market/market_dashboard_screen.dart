@@ -263,11 +263,17 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButtonFormField<String>(
+                  isExpanded: true,
                   value: selectedDistrict,
                   decoration: const InputDecoration(
                     labelText: "Select District",
                     prefixIcon: Icon(Icons.location_on),
                     border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 16,
+                    ),
+
                   ),
                   items: [
                     const DropdownMenuItem(
@@ -279,11 +285,14 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                         value: district,
                         child: SizedBox(
                             width: 220,
+                          child: SizedBox(
+                            width: 220,
                             child: Text(
                               district,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                        )
+                            ),
+                          ),
                       ),
                     ),
                     ),
@@ -329,7 +338,7 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                     }
                   },
                   child: const Text(
-                    'Proceed',
+                    'Submit',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
@@ -395,23 +404,102 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    "Price alerts coming soon!",
-                  ),
-                ),
-              );
-            },
+
+      actions: [
+
+        // Wishlist
+        IconButton(
+          icon: const Icon(
+            Icons.favorite,
+            color: Colors.white,
           ),
-        ],
+          onPressed: () {
+
+            final wishlist = allItems.where((item) {
+              final favouriteId =
+                  "${item.commodity}_${item.state}_${item.district}_${item.market}";
+
+              return favourites.contains(favouriteId);
+            }).toList();
+
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(25),
+                ),
+              ),
+              builder: (context) {
+
+                if (wishlist.isEmpty) {
+                  return const SizedBox(
+                    height: 250,
+                    child: Center(
+                      child: Text(
+                        "No favourite items",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return SizedBox(
+                  height: 500,
+                  child: ListView.builder(
+                    itemCount: wishlist.length,
+                    itemBuilder: (context, index) {
+
+                      final item = wishlist[index];
+
+                      return ListTile(
+
+                        leading: Text(
+                          getEmoji(item.commodity),
+                          style: const TextStyle(fontSize: 30),
+                        ),
+
+                        title: Text(
+                          item.commodity,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        subtitle: Text(
+                          "${item.market}\n₹${item.modalPrice}",
+                        ),
+
+                        trailing: IconButton(
+                          icon: const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+
+                            setState(() {
+                              favourites.remove(item.commodity);
+                            });
+
+                            Navigator.pop(context);
+
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          },
+        ),
+
+
+
+      ],
       ),
       body: SizedBox.expand(
         child: Container(
@@ -552,6 +640,8 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                                 ),
                                 itemBuilder: (context, index) {
                                   final item = displayItems[index];
+                                  final favouriteId =
+                                      "${item.commodity}_${item.state}_${item.district}_${item.market}";
 
                                   return Card(
                                     elevation: 8,
@@ -576,23 +666,23 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                                               ),
                                               IconButton(
                                                 icon: Icon(
-                                                  favourites.contains(item.commodity)
+                                                  favourites.contains(favouriteId)
                                                       ? Icons.favorite
                                                       : Icons.favorite_border,
                                                   color: favourites.contains(
-                                                      item.commodity)
+                                                      favouriteId)
                                                       ? Colors.red
                                                       : Colors.grey,
                                                 ),
                                                 onPressed: () {
                                                   setState(() {
                                                     if (favourites.contains(
-                                                        item.commodity)) {
+                                                        favouriteId)) {
                                                       favourites.remove(
-                                                          item.commodity);
+                                                          favouriteId);
                                                     } else {
                                                       favourites.add(
-                                                          item.commodity);
+                                                          favouriteId);
                                                     }
                                                   });
                                                 },
