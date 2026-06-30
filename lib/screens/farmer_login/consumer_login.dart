@@ -6,6 +6,9 @@ import '../../utils/app_colors.dart';
 import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
+import '../register/consumer_register.dart';
+import '../buyer/dashboard_page.dart';
+
 
 import '../register/consumer_register.dart';
 
@@ -52,7 +55,12 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
 
     setState(() => _isLoading = false);
     if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed(AppRoutes.consumerDashboard);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DashboardPage(),
+      ),
+    );
   }
 
   void _showPlaceholder(String feature) {
@@ -183,8 +191,17 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
                         child: CustomButton(
                           label: 'Register as Consumer',
                           isOutlined: true,
-                          onPressed: () => _showPlaceholder('Registration'),
-                        ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>  RegisterPage(
+                                  userType : "Consumer",
+                                ),
+                              ),
+
+                            );
+                          },                        ),
                       ),
                     ],
                   ),
