@@ -7,11 +7,6 @@ import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../register/consumer_register.dart';
-import '../buyer/dashboard_page.dart';
-
-
-import '../register/consumer_register.dart';
-
 
 
 /// Login screen for Consumers.
@@ -55,12 +50,7 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
 
     setState(() => _isLoading = false);
     if (!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const DashboardPage(),
-      ),
-    );
+    Navigator.of(context).pushReplacementNamed(AppRoutes.consumerDashboard);
   }
 
   void _showPlaceholder(String feature) {

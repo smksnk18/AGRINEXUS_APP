@@ -7,13 +7,10 @@ import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../register/farmer_register.dart';
-
-import '../register/farmer_register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/firebase_auth_service.dart';
 import '../../services/auth_api_service.dart';
 import '../otp_screen.dart';
-
 
 /// Login screen for Farmers.
 ///
@@ -134,7 +131,6 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import '../farmer_login/consumer_login.dart';
-
 import '../../services/firebase_auth_service.dart';
 import '../otp_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/auth_api_service.dart';
-import '../../utils/app_routes.dart';
-
 
 class RegisterPage extends StatefulWidget {
   final String userType;
@@ -596,18 +593,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         onPressed: () async {
 
-                          // BUG FIX: form was never validated before sending OTP.
-                          if (!_formKey.currentState!.validate()) return;
-
-                          if (phoneNumber.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Please enter a valid phone number"),
-                              ),
-                            );
-                            return;
-                          }
-
                           await firebaseAuth.sendOtp(
 
                             phoneNumber: phoneNumber,
@@ -627,58 +612,27 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                 String token = (await FirebaseAuth.instance.currentUser!.getIdToken())!;
 
-                                try {
-                                  final response = await api.register(
+                                await api.register(
 
-                                    token: token,
+                                  token: token,
 
-                                    name: nameController.text,
+                                  name: nameController.text,
 
-                                    role: "consumer",
+                                  role: "consumer",
 
-                                  );
+                                );
 
-                                  if (!mounted) return;
+                                if (!mounted) return;
 
-                                  // BUG FIX: previously this only showed a SnackBar and
-                                  // never navigated anywhere, so the screen appeared "stuck".
-                                  if (response["success"] == true) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text("Registration Successful"),
-                                      ),
-                                    );
+                                ScaffoldMessenger.of(context).showSnackBar(
 
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      AppRoutes.consumerDashboard,
-                                      (route) => false,
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          response["message"] ??
-                                              "Registration failed. Please try again.",
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                } catch (e, s) {
-                                  print("REGISTER ERROR");
-                                  print(e);
-                                  print(s);
+                                  const SnackBar(
 
-                                  if (!mounted) return;
+                                    content: Text("Registration Successful"),
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        "Could not reach the server. Check your connection and try again.",
-                                      ),
-                                    ),
-                                  );
-                                }
+                                  ),
+
+                                );
 
                               }
 
@@ -693,7 +647,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
 
                             },
-
 
                           );
 

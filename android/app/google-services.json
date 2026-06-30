@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "362634025268",
+    "project_id": "agrinexus-ffc04",
+    "storage_bucket": "agrinexus-ffc04.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362634025268:android:e6f7cc758a7405b76aed61",
+        "android_client_info": {
+          "package_name": "com.example.agrinexus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbBlazXjJmx4ZVertrA1EOvWv6lbvreIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
