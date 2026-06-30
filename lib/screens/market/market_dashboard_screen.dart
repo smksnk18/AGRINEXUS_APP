@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import '../../screens/farmer_dashboard/dashboard_page.dart';
 import '../../models/market/market_item_model.dart';
 import '../../services/market/api_service.dart';
 
@@ -148,29 +148,14 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5FFF5),
-      drawer: Drawer(
+      backgroundColor:Colors.white,
+
+
+      endDrawer: Drawer(
         child: SafeArea(
           child: Column(
             children: [
-              UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.green,
-                ),
-                accountName: const Text(
-                  "Hemaprakash",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                accountEmail: const Text("Farmer"),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    size: 45,
-                    color: Colors.green,
-                  ),
-                ),
-              ),
+
               const Padding(
                 padding: EdgeInsets.all(12),
                 child: Align(
@@ -341,7 +326,7 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                     'Submit',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -392,126 +377,53 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
-        title: const Text(
-          'Market Prices',
-          style: TextStyle(
 
-            color: Colors.white,
+        automaticallyImplyLeading: false,
+
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+
+        title: const Text(
+          "Market Prices",
+          style: TextStyle(
+            color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
 
-      actions: [
-
-        // Wishlist
-        IconButton(
-          icon: const Icon(
-            Icons.favorite,
-            color: Colors.white,
-          ),
-          onPressed: () {
-
-            final wishlist = allItems.where((item) {
-              final favouriteId =
-                  "${item.commodity}_${item.state}_${item.district}_${item.market}";
-
-              return favourites.contains(favouriteId);
-            }).toList();
-
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(25),
-                ),
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.black,
               ),
-              builder: (context) {
-
-                if (wishlist.isEmpty) {
-                  return const SizedBox(
-                    height: 250,
-                    child: Center(
-                      child: Text(
-                        "No favourite items",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
-                return SizedBox(
-                  height: 500,
-                  child: ListView.builder(
-                    itemCount: wishlist.length,
-                    itemBuilder: (context, index) {
-
-                      final item = wishlist[index];
-
-                      return ListTile(
-
-                        leading: Text(
-                          getEmoji(item.commodity),
-                          style: const TextStyle(fontSize: 30),
-                        ),
-
-                        title: Text(
-                          item.commodity,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        subtitle: Text(
-                          "${item.market}\n₹${item.modalPrice}",
-                        ),
-
-                        trailing: IconButton(
-                          icon: const Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          ),
-                          onPressed: () {
-
-                            setState(() {
-                              favourites.remove(item.commodity);
-                            });
-
-                            Navigator.pop(context);
-
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                );
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
               },
-            );
-          },
-        ),
-
-
-
-      ],
+            ),
+          ),
+        ],
       ),
+
+
+
+
+
       body: SizedBox.expand(
         child: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFFE8F5E9),
-                Color(0xFFC8E6C9),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            color: Colors.white,
           ),
           child: FutureBuilder<List<MarketItem>>(
             future: futureData,
@@ -654,41 +566,15 @@ class _MarketDashboardScreenState extends State<MarketDashboardScreen> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                getEmoji(item.commodity),
-                                                style: const TextStyle(
-                                                  fontSize: 28,
-                                                ),
+                                          Center(
+                                            child: Text(
+                                              getEmoji(item.commodity),
+                                              style: const TextStyle(
+                                                fontSize: 40,
                                               ),
-                                              IconButton(
-                                                icon: Icon(
-                                                  favourites.contains(favouriteId)
-                                                      ? Icons.favorite
-                                                      : Icons.favorite_border,
-                                                  color: favourites.contains(
-                                                      favouriteId)
-                                                      ? Colors.red
-                                                      : Colors.grey,
-                                                ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (favourites.contains(
-                                                        favouriteId)) {
-                                                      favourites.remove(
-                                                          favouriteId);
-                                                    } else {
-                                                      favourites.add(
-                                                          favouriteId);
-                                                    }
-                                                  });
-                                                },
-                                              ),
-                                            ],
+                                            ),
                                           ),
+
                                           Text(
                                             item.commodity,
                                             textAlign: TextAlign.center,

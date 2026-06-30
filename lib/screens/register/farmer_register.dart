@@ -45,6 +45,9 @@ class _RegisterPageState extends State<Registerpage> {
             color: Colors.white,
           ),
         ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
 
         centerTitle: true,
         backgroundColor: Colors.green,

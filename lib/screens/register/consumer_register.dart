@@ -277,7 +277,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ? Icons.radio_button_checked
                                         : Icons.radio_button_off,
                                     color: Colors.green,
-                                    size: 24,
                                   ),
                                 ],
                               ),
