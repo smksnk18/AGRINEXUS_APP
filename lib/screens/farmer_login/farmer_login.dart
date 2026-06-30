@@ -8,6 +8,13 @@ import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../register/farmer_register.dart';
 
+import '../register/farmer_register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../services/firebase_auth_service.dart';
+import '../../services/auth_api_service.dart';
+import '../otp_screen.dart';
+
+
 /// Login screen for Farmers.
 ///
 /// Includes mobile number + password login, "Forgot Password",
@@ -24,6 +31,8 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
   final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  final FirebaseAuthService firebaseAuth = FirebaseAuthService();
+  final AuthApiService api = AuthApiService();
 
   @override
   void dispose() {
@@ -33,23 +42,83 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
   }
 
   Future<void> _handleLogin() async {
+
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 900)); // simulate network
+    setState(() {
+      _isLoading = true;
+    });
 
-    if (!mounted) return;
-    await context.read<AppStateProvider>().login(
-          name: 'Farmer',
-          identifier: _mobileController.text.trim(),
-          role: UserRole.farmer,
+    String phone = "+91${_mobileController.text.trim()}";
+
+    await firebaseAuth.sendOtp(
+
+      phoneNumber: phone,
+
+      codeSent: (String verificationId) async {
+
+        bool? verified = await Navigator.push(
+
+          context,
+
+          MaterialPageRoute(
+
+            builder: (_) => OTPScreen(
+              verificationId: verificationId,
+            ),
+
+          ),
+
         );
 
-    setState(() => _isLoading = false);
-    if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed(
-      AppRoutes.dashboard,
-    );  }
+        if (verified == true) {
+
+          String token =
+          (await FirebaseAuth.instance.currentUser!.getIdToken())!;
+
+          final response = await api.login(token);
+
+          if (!mounted) return;
+
+          if (response["registered"] == true &&
+              response["role"] == "farmer") {
+
+            Navigator.pushReplacementNamed(
+              context,
+              AppRoutes.dashboard,
+            );
+
+          } else {
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Farmer not registered"),
+              ),
+            );
+
+          }
+
+        }
+
+      },
+
+      failed: (message) {
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+
+      },
+
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+  }
 
   void _showPlaceholder(String feature) {
     ScaffoldMessenger.of(context).showSnackBar(

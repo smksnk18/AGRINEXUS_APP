@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import '../farmer_login/consumer_login.dart';
 
+import '../../services/firebase_auth_service.dart';
+import '../otp_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../services/auth_api_service.dart';
+import '../../utils/app_routes.dart';
+
+
 class RegisterPage extends StatefulWidget {
   final String userType;
   const RegisterPage({
@@ -15,6 +22,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  final FirebaseAuthService firebaseAuth = FirebaseAuthService();
+  final AuthApiService api = AuthApiService();
 
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
@@ -277,6 +286,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ? Icons.radio_button_checked
                                         : Icons.radio_button_off,
                                     color: Colors.green,
+                                    size: 24,
                                   ),
                                 ],
                               ),
@@ -584,23 +594,109 @@ class _RegisterPageState extends State<RegisterPage> {
                           backgroundColor: Colors.green,
                         ),
 
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            print("Name: ${nameController.text}");
-                            print("Phone: $phoneNumber");
-                            print("Village: ${villageController.text}");
-                            print("Taluk: ${talukController.text}");
-                            print("District: ${districtController.text}");
-                            print("Pincode: ${pincodeController.text}");
+                        onPressed: () async {
 
+                          // BUG FIX: form was never validated before sending OTP.
+                          if (!_formKey.currentState!.validate()) return;
+
+                          if (phoneNumber.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Registration Successful\n$phoneNumber",
-                                ),
+                              const SnackBar(
+                                content: Text("Please enter a valid phone number"),
                               ),
                             );
+                            return;
                           }
+
+                          await firebaseAuth.sendOtp(
+
+                            phoneNumber: phoneNumber,
+
+                            codeSent: (String verificationId) async {
+
+                              bool? verified = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => OTPScreen(
+                                    verificationId: verificationId,
+                                  ),
+                                ),
+                              );
+
+                              if (verified == true) {
+
+                                String token = (await FirebaseAuth.instance.currentUser!.getIdToken())!;
+
+                                try {
+                                  final response = await api.register(
+
+                                    token: token,
+
+                                    name: nameController.text,
+
+                                    role: "consumer",
+
+                                  );
+
+                                  if (!mounted) return;
+
+                                  // BUG FIX: previously this only showed a SnackBar and
+                                  // never navigated anywhere, so the screen appeared "stuck".
+                                  if (response["success"] == true) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Registration Successful"),
+                                      ),
+                                    );
+
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      AppRoutes.consumerDashboard,
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          response["message"] ??
+                                              "Registration failed. Please try again.",
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                } catch (e, s) {
+                                  print("REGISTER ERROR");
+                                  print(e);
+                                  print(s);
+
+                                  if (!mounted) return;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Could not reach the server. Check your connection and try again.",
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                              }
+
+                            },
+
+                            failed: (message) {
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+
+                                SnackBar(content: Text(message)),
+
+                              );
+
+                            },
+
+
+                          );
+
                         },
                         child: const Text(
                           "Register",

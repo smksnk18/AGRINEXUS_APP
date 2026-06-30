@@ -10,6 +10,10 @@ import '../register/consumer_register.dart';
 import '../buyer/dashboard_page.dart';
 
 
+import '../register/consumer_register.dart';
+
+
+
 /// Login screen for Consumers.
 ///
 /// Includes email + password login, "Remember Me", "Forgot Password",
