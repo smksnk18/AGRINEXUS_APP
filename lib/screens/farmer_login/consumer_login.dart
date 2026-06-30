@@ -7,6 +7,10 @@ import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 
+import '../register/consumer_register.dart';
+
+
+
 /// Login screen for Consumers.
 ///
 /// Includes email + password login, "Remember Me", "Forgot Password",
