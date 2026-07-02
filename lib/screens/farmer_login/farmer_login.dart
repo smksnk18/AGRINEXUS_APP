@@ -7,15 +7,8 @@ import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../register/farmer_register.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../../services/firebase_auth_service.dart';
 import '../../services/auth_api_service.dart';
-import '../otp_screen.dart';
 
-/// Login screen for Farmers.
-///
-/// Includes mobile number + password login, "Forgot Password",
-/// Google Sign-In and OTP login placeholders, plus a register option.
 class FarmerLoginScreen extends StatefulWidget {
   const FarmerLoginScreen({super.key});
 
@@ -28,7 +21,6 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
   final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
-  final FirebaseAuthService firebaseAuth = FirebaseAuthService();
   final AuthApiService api = AuthApiService();
 
   @override
@@ -39,82 +31,64 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
   }
 
   Future<void> _handleLogin() async {
-
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
-    String phone = "+91${_mobileController.text.trim()}";
+    // Always send with +91 country code
+    final phone = "+91${_mobileController.text.trim()}";
+    final password = _passwordController.text;
 
-    await firebaseAuth.sendOtp(
+    try {
+      final response = await api.loginWithPassword(
+        phone: phone,
+        password: password,
+      );
 
-      phoneNumber: phone,
+      if (!mounted) return;
 
-      codeSent: (String verificationId) async {
+      if (response["success"] == true && response["role"] == "farmer") {
 
-        bool? verified = await Navigator.push(
-
-          context,
-
-          MaterialPageRoute(
-
-            builder: (_) => OTPScreen(
-              verificationId: verificationId,
-            ),
-
-          ),
-
+        // Store user in app state so other screens can access it
+        await context.read<AppStateProvider>().login(
+          name: response["name"] ?? "Farmer",
+          identifier: phone,
+          role: UserRole.farmer,
+          rememberMe: false,
         );
-
-        if (verified == true) {
-
-          String token =
-          (await FirebaseAuth.instance.currentUser!.getIdToken())!;
-
-          final response = await api.login(token);
-
-          if (!mounted) return;
-
-          if (response["registered"] == true &&
-              response["role"] == "farmer") {
-
-            Navigator.pushReplacementNamed(
-              context,
-              AppRoutes.dashboard,
-            );
-
-          } else {
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Farmer not registered"),
-              ),
-            );
-
-          }
-
-        }
-
-      },
-
-      failed: (message) {
 
         if (!mounted) return;
 
+        Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
+
+      } else if (response["success"] == true && response["role"] != "farmer") {
+
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
+          const SnackBar(
+            content: Text("This account is not registered as a farmer."),
+          ),
         );
 
-      },
+      } else {
 
-    );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response["message"] ?? "Login failed. Please try again."),
+          ),
+        );
 
-    setState(() {
-      _isLoading = false;
-    });
-
+      }
+    } catch (e) {
+      print("LOGIN ERROR: $e");
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Could not reach the server. Check your connection."),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   void _showPlaceholder(String feature) {
@@ -152,15 +126,15 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
                         child: CustomTextField(
                           controller: _mobileController,
                           label: 'Mobile Number',
-                          hint: 'Enter your mobile number',
+                          hint: 'Enter your registered mobile number',
                           prefixIcon: Icons.phone_android_rounded,
                           keyboardType: TextInputType.phone,
                           validator: (val) {
                             if (val == null || val.trim().isEmpty) {
                               return 'Mobile number is required';
                             }
-                            if (val.trim().length < 10) {
-                              return 'Enter a valid mobile number';
+                            if (val.trim().length != 10) {
+                              return 'Enter a valid 10-digit mobile number';
                             }
                             return null;
                           },
@@ -188,19 +162,6 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () => _showPlaceholder('Forgot password'),
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: AppColors.primaryContainer,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 12),
                       _fadeSlideIn(
                         delay: 200,
@@ -221,13 +182,13 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>  Registerpage(
-                                  userType : "Farmer",
+                                builder: (context) => const Registerpage(
+                                  userType: "Farmer",
                                 ),
                               ),
-
                             );
-                          },                        ),
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -242,16 +203,6 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
                     icon: Icons.g_mobiledata_rounded,
                     isOutlined: true,
                     onPressed: () => _showPlaceholder('Google Sign-In'),
-                  ),
-                ),
-                const SizedBox(height: 14),
-                _fadeSlideIn(
-                  delay: 350,
-                  child: CustomButton(
-                    label: 'Login with OTP',
-                    icon: Icons.sms_outlined,
-                    isOutlined: true,
-                    onPressed: () => _showPlaceholder('OTP Login'),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -284,7 +235,8 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
       curve: Curves.easeOutCubic,
       builder: (context, value, child) => Opacity(
         opacity: value,
-        child: Transform.translate(offset: Offset(0, (1 - value) * 16), child: child),
+        child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16), child: child),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +261,7 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            'Sign in to manage your produce, orders, and revenue.',
+            'Sign in with your registered mobile number and password.',
             style: TextStyle(
               fontSize: 14,
               color: AppColors.onSurfaceVariant.withOpacity(0.85),
@@ -347,7 +299,8 @@ class _FarmerLoginScreenState extends State<FarmerLoginScreen> {
       curve: Curves.easeOutCubic,
       builder: (context, value, c) => Opacity(
         opacity: value,
-        child: Transform.translate(offset: Offset(0, (1 - value) * 14), child: c),
+        child:
+        Transform.translate(offset: Offset(0, (1 - value) * 14), child: c),
       ),
       child: child,
     );
