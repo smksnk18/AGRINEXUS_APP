@@ -1,17 +1,71 @@
-# agrinexus
+# AGRINEXUS_BACKEND
 
-A new Flutter project.
+Flask + MongoDB + Firebase Auth backend for AgriNexus.
 
-## Getting Started
+## ⚠️ Security – do this first
 
-This project is a starting point for a Flutter application.
+Your original repo had `firebase/serviceAccountKey.json` and `variable.env`
+committed to git, including in history. That key gives full admin access to
+your Firebase project.
 
-A few resources to get you started if this is your first Flutter project:
+1. Go to Firebase Console → Project Settings → Service Accounts →
+   regenerate/revoke the existing key, download a new one.
+2. Remove the old files from git history (e.g. with `git filter-repo` or the
+   BFG Repo-Cleaner), then force-push.
+3. Never commit `variable.env` or `serviceAccountKey.json` again — they're
+   now in `.gitignore`.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Setup
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Copy the example env file and fill in real values:
+   ```
+   cp variable.env.example variable.env
+   ```
+   Set `MONGO_URI` (from MongoDB Atlas or your Mongo instance) and `API_KEY`
+   (from data.gov.in, if you use the AGMARKNET endpoints).
+
+2. Put your **new** Firebase service account JSON at
+   `firebase/serviceAccountKey.json`.
+
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Run locally:
+   ```
+   python app.py
+   ```
+   or with gunicorn (same as production):
+   ```
+   gunicorn app:app
+   ```
+
+5. Check `/api/health` — it now actually pings MongoDB and will tell you
+   `"database": "disconnected"` if `MONGO_URI` is wrong, instead of always
+   claiming "connected".
+
+## What was fixed
+
+- `load_dotenv()` was loading the wrong file (`.env` instead of
+  `variable.env`), so `MONGO_URI`/`API_KEY` were never actually read. App now
+  loads `variable.env` explicitly and fails fast with a clear error if
+  `MONGO_URI` is missing.
+- `firebase-admin` was used in code but missing from `requirements.txt`,
+  which would break fresh installs/deploys.
+- `/api/register` and `/api/login` had no error handling around MongoDB
+  calls — a DB failure crashed with a raw 500 instead of returning JSON,
+  which is why OTP/register/login looked like they "did nothing" on the
+  frontend.
+- `/api/states`, `/api/districts`, `/api/talukas`, `/api/crops/paddy` were
+  returning raw MongoDB `ObjectId`s in `jsonify()`, which throws
+  `TypeError: Object of type ObjectId is not JSON serializable`. IDs are now
+  converted to strings.
+- `state_id` / `district_id` / `taluka_id` query params were compared
+  against MongoDB `ObjectId` fields as plain strings, so lookups silently
+  returned nothing. They're now converted to `ObjectId` before querying,
+  with a 400 response for invalid IDs.
+- `/api/health` previously hardcoded `"database": "connected"` regardless of
+  actual connectivity. It now pings MongoDB for real.
+- Added basic 404/500 JSON error handlers and input validation on
+  `/api/register` and `/api/disease-risk`.

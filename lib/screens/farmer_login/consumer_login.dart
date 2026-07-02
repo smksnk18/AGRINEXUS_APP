@@ -6,8 +6,8 @@ import '../../utils/app_colors.dart';
 import '../../utils/app_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
-import '../register/consumer_register.dart';
 import '../buyer/dashboard_page.dart';
+import '../register/consumer_register.dart';
 
 
 /// Login screen for Consumers.
@@ -43,11 +43,11 @@ class _ConsumerLoginScreenState extends State<ConsumerLoginScreen> {
 
     if (!mounted) return;
     await context.read<AppStateProvider>().login(
-          name: 'Consumer',
-          identifier: _emailController.text.trim(),
-          role: UserRole.consumer,
-          rememberMe: _rememberMe,
-        );
+      name: 'Consumer',
+      identifier: _emailController.text.trim(),
+      role: UserRole.consumer,
+      rememberMe: _rememberMe,
+    );
 
     setState(() => _isLoading = false);
     if (!mounted) return;

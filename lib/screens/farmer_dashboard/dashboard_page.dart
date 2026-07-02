@@ -8,10 +8,10 @@ import 'package:agrinexus/screens/crop_guide/paddy_guide_screen.dart';
 import '../eatgood/eatgood_home.dart';
 import '../market/market_dashboard_screen.dart';
 import '../govern/government_schemes/government_schemes_screen.dart';
-import 'package:agrinexus/screens/farmer_login/welcome_screen.dart';
-import '../../services/app_state_provider.dart';
-import 'package:provider/provider.dart';
-import '../../utils/app_colors.dart';
+import '../govern/government_schemes/scheme_details_screen.dart';
+import '../stock/add_stock_screen.dart';
+import '../stock/my_stock_screen.dart';
+
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -441,7 +441,20 @@ class _DashboardPageState extends State<DashboardPage> {
                             icon: filteredIcons[index],
                             colors: filteredGradients[index],
                             onTap: () {
-
+                              if (filteredTitles[index] == "Add Stock") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => const AddStockScreen()),
+                                );
+                                return;
+                              }
+                              if (filteredTitles[index] == "My Stock") {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => const MyStockScreen()),
+                                );
+                                return;
+                              }
                               if (filteredTitles[index] == "Weather Forecast") {
                                 Navigator.push(
                                   context,
