@@ -22,6 +22,7 @@ dependencies:
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.1
   firebase_app_check: ^0.4.0+1
+  flutter_dotenv: ^5.2.1
 
   geolocator: ^11.0.0
   fl_chart: ^0.68.0
@@ -49,3 +50,4 @@ flutter:
 
   assets:
     - assets/images/farm_bg.jpg
+    - .env

@@ -5,13 +5,14 @@ import '../../services/firebase_auth_service.dart';
 import '../otp_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/auth_api_service.dart';
+import '../../utils/app_routes.dart';
 
 class RegisterPage extends StatefulWidget {
   final String userType;
   const RegisterPage({
     super.key,
     required this.userType,
-});
+  });
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -203,15 +204,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                   Flexible(
                                     child: Text(
-                                    "Farmer",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: userType == "Farmer"
-                                          ? Colors.green
-                                          : Colors.black,
+                                      "Farmer",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: userType == "Farmer"
+                                            ? Colors.green
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
                                   ),
 
                                   const SizedBox(width: 10),
@@ -593,6 +594,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         onPressed: () async {
 
+                          // BUG FIX: form was never validated before sending OTP.
+                          if (!_formKey.currentState!.validate()) return;
+
+                          if (phoneNumber.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Please enter a valid phone number"),
+                              ),
+                            );
+                            return;
+                          }
+
                           await firebaseAuth.sendOtp(
 
                             phoneNumber: phoneNumber,
@@ -612,27 +625,60 @@ class _RegisterPageState extends State<RegisterPage> {
 
                                 String token = (await FirebaseAuth.instance.currentUser!.getIdToken())!;
 
-                                await api.register(
+                                try {
+                                  final response = await api.register(
 
-                                  token: token,
+                                    token: token,
 
-                                  name: nameController.text,
+                                    name: nameController.text,
 
-                                  role: "consumer",
+                                    role: "consumer",
 
-                                );
+                                    password: passwordController.text,
 
-                                if (!mounted) return;
+                                  );
 
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                  if (!mounted) return;
 
-                                  const SnackBar(
+                                  // BUG FIX: previously this only showed a SnackBar and
+                                  // never navigated anywhere, so the screen appeared "stuck".
+                                  if (response["success"] == true) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Registration Successful"),
+                                      ),
+                                    );
 
-                                    content: Text("Registration Successful"),
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      AppRoutes.consumerDashboard,
+                                          (route) => false,
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          response["message"] ??
+                                              "Registration failed. Please try again.",
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                } catch (e, s) {
+                                  print("REGISTER ERROR");
+                                  print(e);
+                                  print(s);
 
-                                  ),
+                                  if (!mounted) return;
 
-                                );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Could not reach the server. Check your connection and try again.",
+                                      ),
+                                    ),
+                                  );
+                                }
 
                               }
 
@@ -647,6 +693,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
 
                             },
+
 
                           );
 
