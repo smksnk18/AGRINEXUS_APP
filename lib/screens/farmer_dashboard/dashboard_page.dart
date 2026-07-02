@@ -3,15 +3,17 @@ import '../../widgets/dashboard_card.dart';
 import '../notifications_page.dart';
 import '../detail_page.dart';
 import '../settings_page.dart';
+import '../stock/add_stock_screen.dart';
+import '../stock/my_stock_screen.dart';
 import '../weather/weather_page.dart';
 import 'package:agrinexus/screens/crop_guide/paddy_guide_screen.dart';
 import '../eatgood/eatgood_home.dart';
 import '../market/market_dashboard_screen.dart';
 import '../govern/government_schemes/government_schemes_screen.dart';
-import '../govern/government_schemes/scheme_details_screen.dart';
-import '../stock/add_stock_screen.dart';
-import '../stock/my_stock_screen.dart';
-
+import 'package:agrinexus/screens/farmer_login/welcome_screen.dart';
+import '../../services/app_state_provider.dart';
+import 'package:provider/provider.dart';
+import '../../utils/app_colors.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
