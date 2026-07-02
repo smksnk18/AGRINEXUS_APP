@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
             subtitle: const Text("Enable dark theme"),
             value: appState.isDarkMode,
             onChanged: (value) {
-              appState.toggleTheme(value);
+              appState.setTheme(value);
             },
           ),
         ],

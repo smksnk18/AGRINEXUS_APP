@@ -4,6 +4,7 @@ import '../models/app_user.dart';
 
 /// App-wide session state managed via Provider.
 class AppStateProvider extends ChangeNotifier {
+
   UserRole _selectedRole = UserRole.none;
   AppUser? _currentUser;
   bool _rememberMe = false;
@@ -15,8 +16,21 @@ class AppStateProvider extends ChangeNotifier {
   bool get isLoggedIn => _currentUser != null;
   bool get isDarkMode => _isDarkMode;
 
-  void toggleTheme(bool value) {
+  Future<void> toggleTheme() async {
+    _isDarkMode = !_isDarkMode;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("dark_mode", _isDarkMode);
+
+    notifyListeners();
+  }
+
+  Future<void> setTheme(bool value) async {
     _isDarkMode = value;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("dark_mode", value);
+
     notifyListeners();
   }
 
@@ -48,6 +62,7 @@ class AppStateProvider extends ChangeNotifier {
   /// Loads any previously remembered session from SharedPreferences.
   Future<void> loadSavedSession() async {
     final prefs = await SharedPreferences.getInstance();
+    _isDarkMode = prefs.getBool('dark_mode') ?? false;
     final remembered = prefs.getBool('remember_me') ?? false;
     if (remembered) {
       final identifier = prefs.getString('user_identifier');

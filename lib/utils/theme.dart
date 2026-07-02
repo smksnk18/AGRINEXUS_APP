@@ -157,10 +157,160 @@ class AppTheme {
   }
 
   static ThemeData get darkTheme {
-    return ThemeData(
+    final base = ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      colorSchemeSeed: const Color(0xff2D6A4F),
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.darkPrimary,
+        secondary: AppColors.darkSuccess,
+
+        surface: AppColors.darkSurface,
+        error: AppColors.darkError,
+
+        onPrimary: Colors.black,
+        onSecondary: Colors.black,
+        onSurface: AppColors.darkOnSurface,
+      ),
+
+      scaffoldBackgroundColor: AppColors.darkBackground,
+      dialogTheme: const DialogThemeData(
+        backgroundColor: AppColors.darkSurface,
+      ),
+
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColors.darkSurface,
+      ),
+
+      dividerColor: AppColors.darkOutline,
+      canvasColor: AppColors.darkSurface,
+    );
+
+    final textTheme = GoogleFonts.manropeTextTheme(base.textTheme).copyWith(
+      displayLarge: GoogleFonts.poppins(
+        fontSize: 40,
+        fontWeight: FontWeight.w800,
+        color: Colors.white,
+      ),
+
+      displayMedium: GoogleFonts.poppins(
+        fontSize: 32,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+
+      headlineLarge: GoogleFonts.poppins(
+        fontSize: 28,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+
+      headlineMedium: GoogleFonts.poppins(
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+
+      titleLarge: GoogleFonts.manrope(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+
+      titleMedium: GoogleFonts.manrope(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: Colors.white70,
+      ),
+
+      bodyLarge: GoogleFonts.manrope(
+        fontSize: 16,
+        color: Colors.white70,
+      ),
+
+      bodyMedium: GoogleFonts.manrope(
+        fontSize: 14,
+        color: Colors.white60,
+      ),
+
+      labelLarge: GoogleFonts.manrope(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+    );
+
+    return base.copyWith(
+      textTheme: textTheme,
+
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.darkBackground,
+        foregroundColor: AppColors.darkOnSurface,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: textTheme.titleLarge,
+      ),
+
+      cardTheme: CardThemeData(
+        color: AppColors.darkCard,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.darkCard,
+
+        contentPadding:
+        const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: AppColors.darkOutlineVariant,
+          ),
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: AppColors.darkPrimary,
+            width: 2,
+          ),
+        ),
+      ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.darkPrimaryContainer,
+          foregroundColor: Colors.white,
+
+          minimumSize: const Size.fromHeight(56),
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.darkPrimary;
+          }
+          return Colors.grey.shade400;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.darkPrimary.withValues(alpha: 0.4);
+          }
+          return Colors.grey.shade700;
+        }),
+      ),
     );
   }
 }

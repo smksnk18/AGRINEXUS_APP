@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^6.3.0
+  flutter_dotenv: ^5.2.1
 
   cupertino_icons: ^1.0.8
   provider: ^6.1.2
@@ -46,3 +47,4 @@ flutter:
 
   assets:
     - assets/images/farm_bg.jpg
+    - .env

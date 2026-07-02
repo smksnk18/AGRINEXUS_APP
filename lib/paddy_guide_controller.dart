@@ -23,8 +23,28 @@ class PaddyGuideController extends ChangeNotifier {
   List<DiseaseRiskModel> diseaseRisks = [];
 
   Future<void> loadInitialStates() async {
+
+    selectedState = null;
+    selectedDistrict = null;
+    selectedTaluka = null;
+    selectedVariety = null;
+
+    states.clear();
+    districts.clear();
+    talukas.clear();
+    availableVarieties.clear();
+
     _setLoading(true);
+
     states = await _apiService.fetchStates();
+
+    debugPrint("States loaded: ${states.length}");
+
+    debugPrint("========== STATES ==========");
+    for (final s in states) {
+      debugPrint("${s.id} | ${s.name}");
+    }
+
     _setLoading(false);
   }
   Future<void> loadDiseaseRisk(
@@ -41,6 +61,8 @@ class PaddyGuideController extends ChangeNotifier {
     notifyListeners();
   }
   Future<void> selectState(LocationEntity? state) async {
+debugPrint("Selected State = ${state?.id} ${state?.name}");
+
     selectedState = state;
     selectedDistrict = null;
     selectedTaluka = null;
@@ -49,9 +71,15 @@ class PaddyGuideController extends ChangeNotifier {
     talukas = [];
     availableVarieties = [];
 
+
     if (state != null) {
       _setLoading(true);
       districts = await _apiService.fetchDistricts(state.id);
+      debugPrint("========== DISTRICTS ==========");
+
+      for (final d in districts) {
+        debugPrint("${d.id} | ${d.name}");
+      }
       _setLoading(false);
     }
     notifyListeners();

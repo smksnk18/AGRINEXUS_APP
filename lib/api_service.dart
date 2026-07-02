@@ -1,7 +1,7 @@
 // lib/api_service.dart
-
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:agrinexus/models/crop_models.dart';
@@ -28,12 +28,16 @@ class AgriNexusApiService {
           response.body,
         );
 
-        return data
-            .map(
-              (item) =>
-              LocationEntity.fromJson(item),
-        )
+        final states = data
+            .map((item) => LocationEntity.fromJson(item))
             .toList();
+
+        debugPrint("========== STATES ==========");
+        for (final s in states) {
+          debugPrint("${s.id} | ${s.name}");
+        }
+
+        return states;
       }
     } catch (e) {
       print("Error fetching states: $e");
@@ -46,32 +50,32 @@ class AgriNexusApiService {
   // DISTRICTS
   // ==========================
 
-  Future<List<LocationEntity>> fetchDistricts(
-      String stateId,
-      ) async {
+  Future<List<LocationEntity>> fetchDistricts(String stateId) async {
     try {
       final response = await http.get(
-        Uri.parse(
-          '$baseUrl/districts?state_id=$stateId',
-        ),
+        Uri.parse('$baseUrl/districts?state_id=$stateId'),
       );
+
+      debugPrint("District URL: $baseUrl/districts?state_id=$stateId");
+      debugPrint("Status Code: ${response.statusCode}");
+      debugPrint("Response Body: ${response.body}");
 
       if (response.statusCode == 200) {
-        List data = json.decode(
-          response.body,
-        );
+        List data = json.decode(response.body);
 
-        return data
-            .map(
-              (item) =>
-              LocationEntity.fromJson(item),
-        )
+        final districts = data
+            .map((item) => LocationEntity.fromJson(item))
             .toList();
+
+        debugPrint("========== DISTRICTS ==========");
+        for (final d in districts) {
+          debugPrint("${d.id} | ${d.name}");
+        }
+
+        return districts;
       }
     } catch (e) {
-      print(
-        "Error fetching districts: $e",
-      );
+      debugPrint("Error fetching districts: $e");
     }
 
     return [];

@@ -177,7 +177,9 @@ class _PaddyGuideScreenState extends State<PaddyGuideScreen> {
                 // State Dropdown
                 DropdownButtonFormField<LocationEntity>(
                   decoration: InputDecoration(labelText: 'Select State', border: OutlineInputBorder()),
-                  value: controller.selectedState,
+                  value: controller.states.any((s) => s.id == controller.selectedState?.id)
+                      ? controller.selectedState
+                      : null,
                   items: controller.states.map((s) => DropdownMenuItem(value: s, child: Text(s.name))).toList(),
                   onChanged: controller.selectState,
                 ),
@@ -186,7 +188,9 @@ class _PaddyGuideScreenState extends State<PaddyGuideScreen> {
                 // District Dropdown
                 DropdownButtonFormField<LocationEntity>(
                   decoration: InputDecoration(labelText: 'Select District', border: OutlineInputBorder()),
-                  value: controller.selectedDistrict,
+                  value: controller.districts.any((d) => d.id == controller.selectedDistrict?.id)
+                      ? controller.selectedDistrict
+                      : null,
                   items: controller.districts.map((d) => DropdownMenuItem(value: d, child: Text(d.name))).toList(),
                   onChanged: controller.selectedState == null ? null : controller.selectDistrict,
                 ),
@@ -195,7 +199,9 @@ class _PaddyGuideScreenState extends State<PaddyGuideScreen> {
                 // Taluka Dropdown
                 DropdownButtonFormField<LocationEntity>(
                   decoration: InputDecoration(labelText: 'Select Taluka', border: OutlineInputBorder()),
-                  value: controller.selectedTaluka,
+                  value: controller.talukas.any((t) => t.id == controller.selectedTaluka?.id)
+                      ? controller.selectedTaluka
+                      : null,
                   items: controller.talukas.map((t) => DropdownMenuItem(value: t, child: Text(t.name))).toList(),
                   onChanged: controller.selectedDistrict == null ? null : controller.selectTaluka,
                 ),
@@ -204,7 +210,10 @@ class _PaddyGuideScreenState extends State<PaddyGuideScreen> {
                 // Variety Dropdown
                 DropdownButtonFormField<PaddyVariety>(
                   decoration: InputDecoration(labelText: 'Select Variety', border: OutlineInputBorder()),
-                  value: controller.selectedVariety,
+                  value: controller.availableVarieties.any(
+                          (v) => v.id == controller.selectedVariety?.id)
+                      ? controller.selectedVariety
+                      : null,
                   items: controller.availableVarieties.map((v) => DropdownMenuItem(value: v, child: Text(v.name))).toList(),
                   onChanged: controller.selectedTaluka == null ? null : controller.selectVariety,
                 ),
