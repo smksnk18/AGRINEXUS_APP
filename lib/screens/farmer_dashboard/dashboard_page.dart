@@ -100,6 +100,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         backgroundColor: Colors.transparent,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -112,10 +113,30 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
         actions: [
+          Consumer<AppStateProvider>(
+            builder: (context, appState, child) {
+              return IconButton(
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: Icon(
+                    appState.isDarkMode
+                        ? Icons.light_mode_rounded
+                        : Icons.dark_mode_rounded,
+                    key: ValueKey(appState.isDarkMode),
+                  ),
+                ),
+                onPressed: () {
+                  appState.toggleTheme();
+                },
+              );
+            },
+          ),
+
           Padding(
             padding: const EdgeInsets.only(right: 15),
             child: Badge(
-              label: Text("3"),
+              backgroundColor: Colors.red.shade400,
+              label: const Text("3"),
               child: IconButton(
                 icon: Icon(
                   Icons.notifications_outlined,
@@ -145,11 +166,16 @@ class _DashboardPageState extends State<DashboardPage> {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xff2D6A4F),
-                      Color(0xff40916C),
-                    ],
+                  gradient: LinearGradient(
+                      colors: Theme.of(context).brightness == Brightness.dark
+                          ? [
+                        AppColors.darkPrimaryContainer,
+                        AppColors.darkPrimary,
+                      ]
+                          : const [
+                        Color(0xff2D6A4F),
+                        Color(0xff40916C),
+                      ],
                   ),
                   boxShadow: const [
                     BoxShadow(
@@ -283,18 +309,22 @@ class _DashboardPageState extends State<DashboardPage> {
                   color: Colors.red,
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const WelcomeScreen()));
+              },
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor:
-        Color(0xff43AA8B),
+        Theme.of(context).brightness == Brightness.dark
+            ? AppColors.darkPrimaryContainer
+            : const Color(0xff43AA8B),
         icon:
-        Icon(Icons.add),
+        Icon(Icons.add, color: Colors.white),
         label:
-        Text("New Crop"),
+        Text("New Crop", style: TextStyle(color: Colors.white)),
         onPressed: (){},
       ),
       body: AnimatedContainer(
@@ -303,8 +333,8 @@ class _DashboardPageState extends State<DashboardPage> {
           gradient: LinearGradient(
             colors: Theme.of(context).brightness == Brightness.dark
                 ? [
-              const Color(0xff121212),
-              const Color(0xff1E1E1E),
+              AppColors.darkBackground,
+              AppColors.darkSurface,
             ]
                 : [
               const Color(0xffF5F7F9),
@@ -315,7 +345,8 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
         child: SafeArea(
-          child: Column(
+          child: SingleChildScrollView(
+            child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -335,7 +366,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     Text(
                       "Explore Your Own Farmer Dashboard",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.darkOnSurfaceVariant
+                            : Theme.of(context).colorScheme.onSurface.withOpacity(.75),
                         fontSize: 16,
                       ),
                     ),
@@ -354,11 +387,17 @@ class _DashboardPageState extends State<DashboardPage> {
                   decoration:
                   InputDecoration(
                     filled: true,
-                    fillColor: Theme.of(context).colorScheme.surface,
-                    prefixIcon:
-                    Icon(Icons.search, color: Color(0xff43AA8B)),
+                    fillColor: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.darkCard
+                        : Theme.of(context).colorScheme.surface,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.darkPrimary
+                          : const Color(0xff43AA8B),
+                    ),
                     hintText:
-                    "Search",
+                    "Search dashboard",
                     border:
                     OutlineInputBorder(
                       borderRadius:
@@ -370,8 +409,7 @@ class _DashboardPageState extends State<DashboardPage> {
               SizedBox(
                 height: 20,
               ),
-              Expanded(
-                child: LayoutBuilder(
+              LayoutBuilder(
                     builder: (_, constraints) {
                       int count;
                       if (constraints.maxWidth < 600) {
@@ -384,6 +422,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         count = 4;
                       }
                       return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
                         padding: const EdgeInsets.all(20),
                         itemCount: filteredTitles.length,
                         gridDelegate:
@@ -502,8 +542,9 @@ class _DashboardPageState extends State<DashboardPage> {
                       );
                     }
                 ),
-              ),
+
             ],
+          ),
           ),
         ),
       ),

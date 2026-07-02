@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_routes.dart';
 import '../widgets/animated_logo.dart';
+import 'package:provider/provider.dart';
+import '../services/app_state_provider.dart';
 
 /// The first screen shown when AgriNexus launches.
 ///
@@ -40,10 +42,14 @@ class _SplashScreenState extends State<SplashScreen>
     });
 
     // Auto-navigate to the Welcome screen after 3 seconds.
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.welcome);
-      }
+    Future.delayed(const Duration(seconds: 3), () async {
+      if (!mounted) return;
+
+      await context.read<AppStateProvider>().loadSavedSession();
+
+      if (!mounted) return;
+
+      Navigator.of(context).pushReplacementNamed(AppRoutes.welcome);
     });
   }
 

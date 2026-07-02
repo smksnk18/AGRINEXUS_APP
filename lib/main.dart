@@ -50,14 +50,23 @@ class AgriNexusApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AppStateProvider()),
         ChangeNotifierProvider(create: (_) => PaddyGuideController()),
       ],
-      child: MaterialApp(
+      child: Consumer<AppStateProvider>(
+        builder: (context, appState, _) {
+      return MaterialApp(
         title: 'AgriNexus',
         debugShowCheckedModeBanner: false,
+
         theme: AppTheme.lightTheme,
-        themeMode: ThemeMode.light,
+        darkTheme: AppTheme.darkTheme,
+
+        themeMode:
+        appState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+
         initialRoute: AppRoutes.splash,
         routes: AppRoutes.routes,
-      ),
+      );
+    },
+    ),
     );
   }
 }

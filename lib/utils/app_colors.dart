@@ -63,7 +63,42 @@ class AppColors {
     colors: [Color(0xFF3F6653), Color(0xFF1B4332)],
   );
 
+  static const LinearGradient darkBackgroundGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFF0F172A),
+      Color(0xFF111827),
+      Color(0xFF1E293B),
+    ],
+  );
+
   // Glassmorphism helper colors
   static Color glassFill = Colors.white.withOpacity(0.12);
   static Color glassBorder = Colors.white.withOpacity(0.25);
+  // ==========================
+// DARK THEME
+// ==========================
+
+// Backgrounds
+  static const Color darkBackground = Color(0xFF0F172A);
+  static const Color darkSurface = Color(0xFF111827);
+  static const Color darkCard = Color(0xFF1E293B);
+
+// Text
+  static const Color darkOnSurface = Color(0xFFF8FAFC);
+  static const Color darkOnSurfaceVariant = Color(0xFFCBD5E1);
+
+// Borders
+  static const Color darkOutline = Color(0xFF334155);
+  static const Color darkOutlineVariant = Color(0xFF475569);
+
+// Brand
+  static const Color darkPrimary = Color(0xFF2ECC71);
+  static const Color darkPrimaryContainer = Color(0xFF1B4332);
+
+// Status
+  static const Color darkSuccess = Color(0xFF57CC99);
+  static const Color darkWarning = Color(0xFFFFD166);
+  static const Color darkError = Color(0xFFFF6B6B);
 }

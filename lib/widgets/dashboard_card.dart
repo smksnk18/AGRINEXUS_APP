@@ -60,19 +60,20 @@ class _DashboardCardState extends State<DashboardCard> {
           tag: widget.title,
           child: Material(
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(24),
           child: InkWell(
-            borderRadius: BorderRadius.circular(30),
-            splashColor: Colors.white24,
+            borderRadius: BorderRadius.circular(24),
+            splashColor: Colors.white.withOpacity(0.12),
+            highlightColor: Colors.transparent,
             onTap: () async {
               if (isAnimating) return;
 
               isAnimating = true;
 
               setState(() {
-                scale = 0.93;
-                shadowBlur = 25;
-                shadowOffset = 15;
+                scale = 0.97;
+                shadowBlur = 22;
+                shadowOffset = 12;
               });
 
               await Future.delayed(
@@ -81,8 +82,8 @@ class _DashboardCardState extends State<DashboardCard> {
 
               setState(() {
                 scale = 1;
-                shadowBlur = 15;
-                shadowOffset = 8;
+                shadowBlur = 18;
+                shadowOffset = 10;
               });
 
               isAnimating = false;
@@ -93,8 +94,10 @@ class _DashboardCardState extends State<DashboardCard> {
               duration: const Duration(milliseconds: 150),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(24),
                 gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   colors: widget.colors,
                 ),
                 boxShadow: [
@@ -114,7 +117,7 @@ class _DashboardCardState extends State<DashboardCard> {
                     color: Colors.white,
                     size: 40,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 14),
                   Text(
                     widget.title,
                     style: const TextStyle(
@@ -123,12 +126,13 @@ class _DashboardCardState extends State<DashboardCard> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 6),
                   Text(
                     widget.subtitle,
                     style: const TextStyle(
                       color: Colors.white70,
-                      fontSize: 12,
+                      fontSize: 13,
+                      height: 1.35,
                     ),
                   ),
                 ],

@@ -1,6 +1,15 @@
 class LocationEntity {
   final String id;
   final String name;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is LocationEntity &&
+              runtimeType == other.runtimeType &&
+              id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 
   LocationEntity({
     required this.id,
@@ -24,6 +33,15 @@ class PaddyVariety {
   final String name;
   final int durationDays;
   final String season;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is PaddyVariety &&
+              runtimeType == other.runtimeType &&
+              id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 
   final double averageYieldPerAcre;
   final String waterRequirement;
